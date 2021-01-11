@@ -73,9 +73,6 @@ namespace DB.EFCore.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<int?>("CategoryFk")
-                        .HasColumnType("INTEGER");
-
                     b.Property<int?>("CategoryId")
                         .HasColumnType("INTEGER");
 

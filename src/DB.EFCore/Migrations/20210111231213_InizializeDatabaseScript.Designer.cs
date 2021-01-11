@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DB.EFCore.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20210111221954_InizializeDatabaseScript")]
+    [Migration("20210111231213_InizializeDatabaseScript")]
     partial class InizializeDatabaseScript
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -73,9 +73,6 @@ namespace DB.EFCore.Migrations
                 {
                     b.Property<int>("ProductId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int?>("CategoryFk")
                         .HasColumnType("INTEGER");
 
                     b.Property<int?>("CategoryId")

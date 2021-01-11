@@ -49,13 +49,11 @@ namespace WebAPI.BackgroundService
                 try
                 {
                     logger.LogDebug("Seed Database Data");
-                    var productRepository = scope.ServiceProvider.GetRequiredService<IRepository<Product>>();
+                    var productRepository = scope.ServiceProvider.GetRequiredService<IProductRepository>();
                     var categoryRepository = scope.ServiceProvider.GetRequiredService<IRepository<Category>>();
                     var optionRepository = scope.ServiceProvider.GetRequiredService<IRepository<Option>>();
 
-                    await createProductAsync(productRepository);
-                    await createCategoryAsync(categoryRepository);
-                    await createOptionAsync(optionRepository);
+                    await seedDatabaseForProduct(productRepository, categoryRepository, optionRepository);
                 }
                 catch (Exception ex)
                 {
@@ -71,15 +69,63 @@ namespace WebAPI.BackgroundService
             return Task.CompletedTask;
         }
 
-        private async Task createProductAsync(IRepository<Product> repository)
+        private async Task seedDatabaseForProduct(IProductRepository repository, IRepository<Category> categoryRepository, IRepository<Option> optionRepository)
         {
+            //Per fare presto (essendo un progettino di dimostrazione)
+            //Popolo il database nel caos in cui non trovo nessun prodotto
+            //Utilizzo direttamente ListAll per fare prima a scrivere il codice anche se sarà piu lento
+            var products = await repository.ListAllAsync();
+            var category = await categoryRepository.ListAllAsync();
+            var option = await optionRepository.ListAllAsync();
+
+            if (products.Count > 0 ||
+                category.Count > 0 ||
+                option.Count > 0)
+            {
+                return;
+            }
+
+
+
+            var categoryDto = new CategoryDto
+            {
+                Name = "Cat1",
+                Description = "DescCat1",
+                CategoryId = 1
+            };
+            var catOne = (await Category.CreateCategoryAsync(categoryDto, null)).ValidatedObject;
+            categoryRepository.Add(catOne);
+            await categoryRepository.SaveChangeAsync(); //Fatto ogni volta per garantirmi l'id crescente
+
+            categoryDto = new CategoryDto
+            {
+                Name = "Cat2",
+                Description = "DescCat2",
+                CategoryId = 2
+            };
+            var catTwo = (await Category.CreateCategoryAsync(categoryDto, null)).ValidatedObject;
+            categoryRepository.Add(catTwo);
+            await categoryRepository.SaveChangeAsync(); //Fatto ogni volta per garantirmi l'id crescente
+
+            categoryDto = new CategoryDto
+            {
+                Name = "Cat3",
+                Description = "DescCat3",
+                CategoryId = 3
+            };
+            var catThree = (await Category.CreateCategoryAsync(categoryDto, null)).ValidatedObject;
+            categoryRepository.Add(catThree);
+            await categoryRepository.SaveChangeAsync(); //Fatto ogni volta per garantirmi l'id crescente
+
+
             var dto = new ProductDto
             {
                 Name = "Product1",
                 Description = "Desc1",
                 CategoryId = 1
             };
-            repository.Add( (await Product.CreateProductAsync(dto, null)).ValidatedObject );
+            var productOne = (await Product.CreateProductAsync(dto, null)).ValidatedObject;
+            repository.Add(productOne);
             await repository.SaveChangeAsync(); //Fatto ogni volta per garantirmi l'id crescente
 
             dto = new ProductDto
@@ -88,7 +134,8 @@ namespace WebAPI.BackgroundService
                 Description = "Desc2",
                 CategoryId = 2
             };
-            repository.Add((await Product.CreateProductAsync(dto, null)).ValidatedObject);
+            var productTwo = (await Product.CreateProductAsync(dto, null)).ValidatedObject;
+            repository.Add(productTwo);
             await repository.SaveChangeAsync(); //Fatto ogni volta per garantirmi l'id crescente
 
             dto = new ProductDto
@@ -97,7 +144,8 @@ namespace WebAPI.BackgroundService
                 Description = "Desc3",
                 CategoryId = 3
             };
-            repository.Add((await Product.CreateProductAsync(dto, null)).ValidatedObject);
+            var productThree = (await Product.CreateProductAsync(dto, null)).ValidatedObject;
+            repository.Add(productThree);
             await repository.SaveChangeAsync(); //Fatto ogni volta per garantirmi l'id crescente
 
             dto = new ProductDto
@@ -106,7 +154,8 @@ namespace WebAPI.BackgroundService
                 Description = "Desc4",
                 CategoryId = 1
             };
-            repository.Add((await Product.CreateProductAsync(dto, null)).ValidatedObject);
+            var productFour = (await Product.CreateProductAsync(dto, null)).ValidatedObject;
+            repository.Add(productFour);
             await repository.SaveChangeAsync(); //Fatto ogni volta per garantirmi l'id crescente
 
             dto = new ProductDto
@@ -115,7 +164,8 @@ namespace WebAPI.BackgroundService
                 Description = "Desc5",
                 CategoryId = 2
             };
-            repository.Add((await Product.CreateProductAsync(dto, null)).ValidatedObject);
+            var productFive = (await Product.CreateProductAsync(dto, null)).ValidatedObject;
+            repository.Add(productFive);
             await repository.SaveChangeAsync(); //Fatto ogni volta per garantirmi l'id crescente
 
             dto = new ProductDto
@@ -124,81 +174,78 @@ namespace WebAPI.BackgroundService
                 Description = "Desc6",
                 CategoryId = null
             };
-            repository.Add((await Product.CreateProductAsync(dto, null)).ValidatedObject);
+            var productSix = (await Product.CreateProductAsync(dto, null)).ValidatedObject;
+            repository.Add(productSix);
             await repository.SaveChangeAsync(); //Fatto ogni volta per garantirmi l'id crescente
-        }
+        
 
-        private async Task createCategoryAsync(IRepository<Category> repository)
-        {
-            var dto = new CategoryDto
-            {
-                Name = "Cat1",
-                Description = "DescCat1",
-                CategoryId = 1
-            };
-            repository.Add((await Category.CreateCategoryAsync(dto, null)).ValidatedObject);
-            await repository.SaveChangeAsync(); //Fatto ogni volta per garantirmi l'id crescente
 
-            dto = new CategoryDto
-            {
-                Name = "Cat2",
-                Description = "DescCat2",
-                CategoryId = 2
-            };
-            repository.Add((await Category.CreateCategoryAsync(dto, null)).ValidatedObject);
-            await repository.SaveChangeAsync(); //Fatto ogni volta per garantirmi l'id crescente
-
-            dto = new CategoryDto
-            {
-                Name = "Cat3",
-                Description = "DescCat3",
-                CategoryId = 3
-            };
-            repository.Add((await Category.CreateCategoryAsync(dto, null)).ValidatedObject);
-            await repository.SaveChangeAsync(); //Fatto ogni volta per garantirmi l'id crescente
-        }
-
-        private async Task createOptionAsync(IRepository<Option> repository)
-        {
-            var dto = new OptionDto
+            var optionDto = new OptionDto
             {
                 Name = "Option1",
                 Description = "DescOption1"
             };
-            repository.Add((await Option.CreateOptionAsync(dto, null)).ValidatedObject);
-            await repository.SaveChangeAsync(); //Fatto ogni volta per garantirmi l'id crescente
+            var option1 = (await Option.CreateOptionAsync(optionDto, null)).ValidatedObject;
+            optionRepository.Add(option1);
+            await optionRepository.SaveChangeAsync(); //Fatto ogni volta per garantirmi l'id crescente
 
-            dto = new OptionDto
+            optionDto = new OptionDto
             {
                 Name = "Option2",
                 Description = "DescOption2"
             };
-            repository.Add((await Option.CreateOptionAsync(dto, null)).ValidatedObject);
-            await repository.SaveChangeAsync(); //Fatto ogni volta per garantirmi l'id crescente
+            var option2 = (await Option.CreateOptionAsync(optionDto, null)).ValidatedObject;
+            optionRepository.Add(option2);
+            await optionRepository.SaveChangeAsync(); //Fatto ogni volta per garantirmi l'id crescente
 
-            dto = new OptionDto
+            optionDto = new OptionDto
             {
                 Name = "Option3",
                 Description = "DescOption3"
             };
-            repository.Add((await Option.CreateOptionAsync(dto, null)).ValidatedObject);
-            await repository.SaveChangeAsync(); //Fatto ogni volta per garantirmi l'id crescente
+            var option3 = (await Option.CreateOptionAsync(optionDto, null)).ValidatedObject;
+            optionRepository.Add(option3);
+            await optionRepository.SaveChangeAsync(); //Fatto ogni volta per garantirmi l'id crescente
 
-            dto = new OptionDto
+            optionDto = new OptionDto
             {
                 Name = "Option4",
                 Description = "DescOption4"
             };
-            repository.Add((await Option.CreateOptionAsync(dto, null)).ValidatedObject);
-            await repository.SaveChangeAsync(); //Fatto ogni volta per garantirmi l'id crescente
+            var option4 = (await Option.CreateOptionAsync(optionDto, null)).ValidatedObject;
+            optionRepository.Add(option4);
+            await optionRepository.SaveChangeAsync(); //Fatto ogni volta per garantirmi l'id crescente
 
-            dto = new OptionDto
+            optionDto = new OptionDto
             {
                 Name = "Option5",
                 Description = "DescOption5"
             };
-            repository.Add((await Option.CreateOptionAsync(dto, null)).ValidatedObject);
-            await repository.SaveChangeAsync(); //Fatto ogni volta per garantirmi l'id crescente
+            var option5 = (await Option.CreateOptionAsync(optionDto, null)).ValidatedObject;
+            optionRepository.Add(option5);
+            await optionRepository.SaveChangeAsync(); //Fatto ogni volta per garantirmi l'id crescente
+
+
+            //repository.LinkCategory(productOne, catOne);
+            //repository.LinkCategory(productFour, catOne);
+            //repository.LinkCategory(productTwo, catTwo);
+            //repository.LinkCategory(productFive, catTwo);
+            //repository.LinkCategory(productThree, catThree);
+
+            repository.LinkOption(productOne, option1);
+            repository.LinkOption(productOne, option2); 
+            repository.LinkOption(productOne, option3);
+
+            repository.LinkOption(productTwo, option1);
+            repository.LinkOption(productTwo, option2);
+            repository.LinkOption(productTwo, option3);
+
+            repository.LinkOption(productThree, option4);
+
+            repository.LinkOption(productFour, option1);
+            repository.LinkOption(productFour, option5);
+
+            await optionRepository.SaveChangeAsync();
         }
     }
 }

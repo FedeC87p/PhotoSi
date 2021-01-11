@@ -22,7 +22,7 @@ namespace DB.EFCore.Repositories
 
         public void LinkOption(Product product, Option option)
         {
-            throw new NotImplementedException();
+            product.AssignOption(option);
         }
 
         public void UnLinkCategory(Product product)
@@ -32,7 +32,7 @@ namespace DB.EFCore.Repositories
 
         public void UnLinkOption(Product product, Option option)
         {
-            throw new NotImplementedException();
+            product.UnAssignOption(option);
         }
     }
 }

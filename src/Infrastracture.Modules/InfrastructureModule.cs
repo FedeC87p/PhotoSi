@@ -43,6 +43,8 @@ namespace Infrastracture.Modules
 
             //Repository
             services.AddTransient(typeof(IRepository<>), typeof(GenericRepository<>));
+            services.AddTransient<IProductRepository, ProductRepository>();
+            
         }
     }
 }

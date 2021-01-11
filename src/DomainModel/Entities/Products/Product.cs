@@ -14,7 +14,7 @@ namespace DomainModel.Entities.Products
         public string Name { get; protected set; }
         public string Description { get; protected set; }
         public string Note { get; set; } //esempio di dato pubblico senza metodo di set
-        public int? CategoryFk { get; protected set; }
+        public int? CategoryId { get; protected set; }
 
 
         public virtual Category Category { get; protected set; }
@@ -76,17 +76,17 @@ namespace DomainModel.Entities.Products
 
         public void SetCategory(Category category)
         {
-            CategoryFk = category?.CategoryId ?? null;
+            CategoryId = category?.CategoryId ?? null;
         }
 
         public void SetCategory(int categoryId)
         {
-            CategoryFk = categoryId;
+            CategoryId = categoryId;
         }
 
         public void RemoveCategory()
         {
-            CategoryFk = null;
+            CategoryId = null;
         }
 
         public void AssignOption(Option option)
