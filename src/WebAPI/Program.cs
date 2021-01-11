@@ -4,6 +4,7 @@ using Microsoft.Extensions.Hosting;
 using Serilog;
 using Serilog.Events;
 using System;
+using System.IO;
 
 namespace WebAPI
 {
@@ -40,11 +41,9 @@ namespace WebAPI
             .ConfigureAppConfiguration((hostingContext, config) =>
             {
                 //config.AddEnvironmentVariables();
-
+                config.SetBasePath(Directory.GetCurrentDirectory());
                 config.AddJsonFile("config/logger.json", false, true);
-                config.AddJsonFile(
-                $"config/logger.{Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Production"}.json",
-                true);
+                config.AddJsonFile( $"config/logger.{Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Production"}.json", true);
             })
             .UseSerilog()
             .ConfigureWebHostDefaults(webBuilder =>

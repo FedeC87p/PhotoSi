@@ -25,9 +25,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Infrastracture.Modules\Infrastracture.Modules.csproj" />
-    <ProjectReference Include="..\Interfaces\PhotoSi.Interfaces.csproj" />
-    <ProjectReference Include="..\PhotoSi.AC\PhotoSi.AC.csproj" />
-    <ProjectReference Include="..\PhotoSi.Command\PhotoSi.Command.csproj" />
+    <ProjectReference Include="..\PhotoSi.AC.Modules\PhotoSi.AC.Modules.csproj" />
   </ItemGroup>
 
   <ItemGroup>

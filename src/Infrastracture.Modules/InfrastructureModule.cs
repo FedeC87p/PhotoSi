@@ -1,4 +1,6 @@
 ﻿using DB.EFCore.Context;
+using DB.EFCore.Repositories;
+using DomainModel.Interfaces;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -11,18 +13,18 @@ namespace Infrastracture.Modules
 {
     public class InfrastructureModule
     {
-        public static void ConfigureOthersInfrastructure(IServiceCollection services, IConfiguration configuration, string contentRootPath)
+        public static void ConfiguresInfrastructure(IServiceCollection services, IConfiguration configuration, string contentRootPath)
         {
-            var databaseConfig = configuration.GetSection("Database") as DatabaseConfig;
+            //Database
+            var dbType = configuration.GetSection("Database:DbType").Value;
+            var connectionString = configuration.GetSection("Database:ConnectionString").Value;
 
-            //services.AddTransient(sp => ConnectionFactory.CreateDbConnection(databaseConfig));
-
-            if (databaseConfig.DbType != null &&
-                databaseConfig.DbType.Equals("SQLite", StringComparison.InvariantCultureIgnoreCase))
+            if (dbType != null &&
+                dbType.Equals("SQLite", StringComparison.InvariantCultureIgnoreCase))
             {
                 var stringBuilder = new SqliteConnectionStringBuilder
                 {
-                    ConnectionString = databaseConfig.ConnectionString
+                    ConnectionString = connectionString
                 };
 
                 stringBuilder.DataSource = Path.Combine(contentRootPath, stringBuilder.DataSource);
@@ -31,14 +33,16 @@ namespace Infrastracture.Modules
                     option.UseLazyLoadingProxies()
                         .UseSqlite(stringBuilder.ConnectionString));
             }
-            else if (databaseConfig.DbType != null &&
-                    databaseConfig.DbType.Equals("SqlServer", StringComparison.InvariantCultureIgnoreCase))
+            else if (dbType != null &&
+                    dbType.Equals("SqlServer", StringComparison.InvariantCultureIgnoreCase))
             {
                 services.AddDbContext<DatabaseContext>(option =>
                     option.UseLazyLoadingProxies()
-                        .UseSqlServer(databaseConfig.ConnectionString));
+                        .UseSqlServer(connectionString));
             }
 
+            //Repository
+            services.AddTransient(typeof(IRepository<>), typeof(GenericRepository<>));
         }
     }
 }

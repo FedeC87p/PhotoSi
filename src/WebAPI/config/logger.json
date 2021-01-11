@@ -1,10 +1,10 @@
-{
+﻿{
   "Serilog": {
     "Using": [
       "Serilog.Sinks.Console"
     ],
     "MinimumLevel": {
-      "Default": "Information",
+      "Default": "Error",
       "Override": {
         "Microsoft": "Warning",
         "System": "Warning",
@@ -17,12 +17,12 @@
         "Name": "Console",
         "Args": {
           "theme": "Serilog.Sinks.SystemConsole.Themes.AnsiConsoleTheme::Code, Serilog.Sinks.Console",
-          "outputTemplate": "[{Timestamp:HH:mm:ss.fff} {Application} {Level:u3}][{RequestId}]: {Message:lj}  {SourceContext} {NewLine}{Exception}"
-          "restrictedToMinimumLevel": "Debug" //Information
+          "outputTemplate": "[{Timestamp:HH:mm:ss.fff} {Application} {Level:u3}][{RequestId}]: {Message:lj}  {SourceContext} {NewLine}{Exception}",
+          //"restrictedToMinimumLevel": "Debug" //Information
         }
       }
     ],
-    "Enrich": [],
+    "Enrich": [ ],
     "Destructure": [
       {
         "Name": "ToMaximumDepth",
