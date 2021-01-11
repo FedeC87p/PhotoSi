@@ -57,7 +57,7 @@ namespace DomainModel.Validators
             }
         }
 
-        public IEnumerable<ValidatorResult> BrokenRules
+        public List<ValidatorResult> BrokenRules
         {
             get
             {

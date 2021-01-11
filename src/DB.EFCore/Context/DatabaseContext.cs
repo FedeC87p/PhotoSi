@@ -16,12 +16,11 @@ namespace DB.EFCore.Context
     public class DatabaseContext : DbContext
     {
         private readonly IMediator _mediator;
-        private IDbContextTransaction _currentTransaction;
 
         public DbSet<Product> Products { get; set; }
         public DbSet<Order> Orders { get; set; }
-
-        public DatabaseContext(DbContextOptions<DatabaseContext> options, IMediator mediator)
+        public DbSet<Category> Categories { get; set; }
+        public DatabaseContext(IMediator mediator)
         {
             _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
         }
@@ -52,11 +51,6 @@ namespace DB.EFCore.Context
             if (dispatchDomainEvent) await _mediator.DispatchPublicDomainEventsAsync(entities);
 
             return result;
-        }
-
-        public IDbContextTransaction GetCurrentTransaction()
-        {
-            return _currentTransaction;
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

@@ -7,7 +7,7 @@ namespace DomainModel.Validators
     {
         Task ExecuteCheckAsync(T dtoEntity, TResult validateObject);
         bool IsValid { get; }
-        IEnumerable<ValidatorResult> BrokenRules { get; }
+        List<ValidatorResult> BrokenRules { get; }
         TResult ValidateObject { get; }
     }
 }

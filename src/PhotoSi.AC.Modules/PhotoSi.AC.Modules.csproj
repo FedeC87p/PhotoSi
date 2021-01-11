@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MediatR" Version="9.0.0" />
+    <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="9.0.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="5.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DomainModel\DomainModel.csproj" />
+    <ProjectReference Include="..\Interfaces\PhotoSi.Interfaces.csproj" />
+    <ProjectReference Include="..\PhotoSi.AC\PhotoSi.AC.csproj" />
+    <ProjectReference Include="..\PhotoSi.Command\PhotoSi.Command.csproj" />
+    <ProjectReference Include="..\PhotoSi.Query\PhotoSi.Query.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,3 +1,4 @@
+using AutoMapper;
 using Infrastracture.Modules;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -6,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using PhotoSi.Interfaces.Configuration;
+using WebAPI.ModelViews;
 
 namespace WebAPI
 {
@@ -29,6 +31,8 @@ namespace WebAPI
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "WebAPI", Version = "v1" });
             });
+
+            services.AddAutoMapper(typeof(WebAPI.ModelViews.AutoMapperConfiguration), typeof(PhotoSi.AC.AutoMapperConfiguration));
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

@@ -4,9 +4,9 @@ using System.Text;
 
 namespace DomainModel.Dtos
 {
-    public class CategoryDto
+    public class OptionDto
     {
-        public int CategoryId { get; set; }
+        public int OptionId { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
     }
