@@ -6,7 +6,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\DB.EFCore\DB.EFCore.csproj" />
-    <ProjectReference Include="..\Interfaces\Interfaces.csproj" />
+    <ProjectReference Include="..\Interfaces\PhotoSi.Interfaces.csproj" />
   </ItemGroup>
 
 </Project>

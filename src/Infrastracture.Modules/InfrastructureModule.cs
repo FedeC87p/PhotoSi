@@ -1,10 +1,9 @@
-﻿using DB.Dapper;
-using DB.EFCore.Context;
-using Interfaces.Configuration;
+﻿using DB.EFCore.Context;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using PhotoSi.Interfaces.Configuration;
 using System;
 using System.IO;
 

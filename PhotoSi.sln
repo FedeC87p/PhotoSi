@@ -9,7 +9,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ApplicationCore", "Applicat
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Domain", "Domain", "{60B15BE4-8F96-4AF5-A167-918A94E20AB6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Interfaces", "src\Interfaces\Interfaces.csproj", "{D5CA1CB1-8A29-4D44-B1CB-59C187019B6D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PhotoSi.Interfaces", "src\Interfaces\PhotoSi.Interfaces.csproj", "{D5CA1CB1-8A29-4D44-B1CB-59C187019B6D}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{0EA5AB98-94A6-4AFD-824C-CA82FFDC3814}"
 EndProject
@@ -18,6 +18,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DB.EFCore", "src\DB.EFCore\DB.EFCore.csproj", "{29AEBA54-5947-46D5-854F-24347CA9B43C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DomainModel", "src\DomainModel\DomainModel.csproj", "{84861735-1D68-44AF-AAE2-D1417083E43E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PhotoSi.AC", "src\PhotoSi.AC\PhotoSi.AC.csproj", "{EF721A45-1F88-4876-B32F-5C513E5BDCB1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +47,10 @@ Global
 		{84861735-1D68-44AF-AAE2-D1417083E43E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{84861735-1D68-44AF-AAE2-D1417083E43E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{84861735-1D68-44AF-AAE2-D1417083E43E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EF721A45-1F88-4876-B32F-5C513E5BDCB1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EF721A45-1F88-4876-B32F-5C513E5BDCB1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EF721A45-1F88-4876-B32F-5C513E5BDCB1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EF721A45-1F88-4876-B32F-5C513E5BDCB1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -55,6 +61,7 @@ Global
 		{42593A94-1549-43B9-B432-9A82BABE4BE1} = {0EA5AB98-94A6-4AFD-824C-CA82FFDC3814}
 		{29AEBA54-5947-46D5-854F-24347CA9B43C} = {0EA5AB98-94A6-4AFD-824C-CA82FFDC3814}
 		{84861735-1D68-44AF-AAE2-D1417083E43E} = {60B15BE4-8F96-4AF5-A167-918A94E20AB6}
+		{EF721A45-1F88-4876-B32F-5C513E5BDCB1} = {B204645C-5CDB-4F5C-BD8B-CF2F604EA565}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E04E5F09-9066-474A-9BBA-B4CEBCCCA3D7}

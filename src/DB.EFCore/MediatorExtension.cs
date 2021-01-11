@@ -1,4 +1,4 @@
-﻿using DomainPrj;
+﻿using DomainModel.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System;
@@ -10,7 +10,7 @@ namespace DB.EFCore
 {
     internal static class MediatorExtension
     {
-        public static async Task DispatchDomainEventsAsync(this IMediator mediator, List<EntityEntry<EntityBase>> entities)
+        public static async Task DispatchDomainEventsAsync(this IMediator mediator, List<EntityEntry<BaseEntity>> entities)
         {
             var domainEvents = entities
                 .SelectMany(x => x.Entity.DomainEvents)
@@ -20,6 +20,20 @@ namespace DB.EFCore
                 .ForEach(entity => entity.Entity.ClearDomainEvents());
 
             foreach (var domainEvent in domainEvents)
+                await mediator.Publish(domainEvent);
+        }
+
+        public static async Task DispatchPublicDomainEventsAsync(this IMediator mediator,
+            List<EntityEntry<BaseEntity>> entities)
+        {
+            var publicDomainEvents = entities
+                .SelectMany(x => x.Entity.PublicDomainEvents)
+                .ToList();
+
+            entities.ToList()
+                .ForEach(entity => entity.Entity.ClearPublicDomainEvents());
+
+            foreach (var domainEvent in publicDomainEvents)
                 await mediator.Publish(domainEvent);
         }
     }

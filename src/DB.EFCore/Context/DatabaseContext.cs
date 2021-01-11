@@ -4,6 +4,9 @@ using System.Linq;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
+using DomainModel.Entities;
+using DomainModel.Entities.Orders;
+using DomainModel.Entities.Products;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
@@ -15,11 +18,13 @@ namespace DB.EFCore.Context
         private readonly IMediator _mediator;
         private IDbContextTransaction _currentTransaction;
 
+        public DbSet<Product> Products { get; set; }
+        public DbSet<Order> Orders { get; set; }
+
         public DatabaseContext(DbContextOptions<DatabaseContext> options, IMediator mediator)
         {
             _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
         }
-
 
         public override int SaveChanges()
         {
@@ -33,24 +38,10 @@ namespace DB.EFCore.Context
             return result;
         }
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            base.OnModelCreating(modelBuilder);
-        }
-
-        public bool HasActiveTransaction => _currentTransaction != null;
-
-        public DbSet<Hub> Hubs { get; set; }
-        public DbSet<Node> Nodes { get; set; }
-        public DbSet<ViewTemplate> ViewTemplates { get; set; }
-        public DbSet<TransatableItem> TransatableItem { get; set; }
-        public DbSet<UserAudit> UserAuditEvents { get; set; }
-        public DbSet<Dashboard> Dashboards { get; set; }
-
         public async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default,
             bool dispatchDomainEvent = true)
         {
-            var entities = ChangeTracker.Entries<Entity>()
+            var entities = ChangeTracker.Entries<BaseEntity>()
                 .Where(x => x.Entity.DomainEvents != null && x.Entity.DomainEvents.Any())
                 .ToList();
 
@@ -68,11 +59,11 @@ namespace DB.EFCore.Context
             return _currentTransaction;
         }
 
-        protected override void OnModelCreating(ModelBuilder builder)
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            base.OnModelCreating(builder);
-            
-            builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+            base.OnModelCreating(modelBuilder);
+
+            modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
         }
 
     }

@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace DataBrowser.Domain.Entities.SeedWork
+namespace DomainModel.Events
 {
     public class PublicEventBase : IPublicEvent
     {

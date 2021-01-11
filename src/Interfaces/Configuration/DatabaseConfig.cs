@@ -1,4 +1,4 @@
-﻿namespace Interfaces.Configuration
+﻿namespace PhotoSi.Interfaces.Configuration
 {
     public class DatabaseConfig
     {
