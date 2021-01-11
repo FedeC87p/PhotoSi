@@ -1,17 +1,17 @@
-﻿using DomainModel.Entities.Products;
+﻿using DomainModel.Entities.Orders;
 using DomainModel.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace DB.EFCore.Configuration
 {
-    public class CategoryConfig : IEntityTypeConfiguration<Category>
+    public class OrderConfig : IEntityTypeConfiguration<Order>
     {
-        public void Configure(EntityTypeBuilder<Category> entity)
+        public void Configure(EntityTypeBuilder<Order> entity)
         {
-            entity.ToTable(TableNames.Category);
+            entity.ToTable(TableNames.Order);
 
-            entity.HasKey(p => p.CategoryId);
+            entity.HasKey(p => p.OrderId);
 
             entity.Ignore(b => b.DomainEvents);
             entity.Ignore(b => b.IntegrationEvents);

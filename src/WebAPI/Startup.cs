@@ -8,6 +8,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using PhotoSi.AC.Modules;
 using PhotoSi.Interfaces.Configuration;
+using WebAPI.BackgroundService;
 using WebAPI.ModelViews;
 
 namespace WebAPI
@@ -32,6 +33,8 @@ namespace WebAPI
 
             ApplicationCore.ConfigureApplicationCore(services);
             InfrastructureModule.ConfiguresInfrastructure(services, Configuration, HostEnvironment.ContentRootPath);
+
+            services.AddHostedService<MigratorDBHostedService>();
 
             services.AddControllers();
             services.AddSwaggerGen(c =>

@@ -8,16 +8,12 @@ namespace DomainModel.Entities
 {
     public class BaseEntity 
     {
-        public virtual long? CreatorUserId { get; set; }
-        public virtual DateTime CreationTime { get; set; }
-        public virtual long? LastModifierUserId { get; set; }
-        public virtual DateTime? LastModificationTime { get; set; }
 
         private List<INotification> _domainEvents;
         public IReadOnlyCollection<INotification> DomainEvents => _domainEvents?.AsReadOnly();
 
-        private List<IPublicEvent> _publicDomainEvents;
-        public IReadOnlyCollection<IPublicEvent> PublicDomainEvents => _publicDomainEvents?.AsReadOnly();
+        private List<IPublicEvent> _integrationEvents;
+        public IReadOnlyCollection<IPublicEvent> IntegrationEvents => _integrationEvents?.AsReadOnly();
 
         public void AddDomainEvent(INotification eventItem)
         {
@@ -30,21 +26,21 @@ namespace DomainModel.Entities
             _domainEvents?.Remove(eventItem);
         }
 
-        public void AddDomainEvent(IPublicEvent eventItem)
+        public void AddIntegrationEvent(IPublicEvent eventItem)
         {
-            _publicDomainEvents = _publicDomainEvents ?? new List<IPublicEvent>();
-            _publicDomainEvents.Add(eventItem);
+            _integrationEvents = _integrationEvents ?? new List<IPublicEvent>();
+            _integrationEvents.Add(eventItem);
         }
 
-        public void RemoveDomainEvent(IPublicEvent eventItem)
+        public void RemoveIntegrationEvent(IPublicEvent eventItem)
         {
-            _publicDomainEvents?.Remove(eventItem);
+            _integrationEvents?.Remove(eventItem);
         }
 
         public void ClearAllDomainEvents()
         {
             _domainEvents?.Clear();
-            _publicDomainEvents?.Clear();
+            _integrationEvents?.Clear();
         }
 
         public void ClearDomainEvents()
@@ -54,7 +50,7 @@ namespace DomainModel.Entities
 
         public void ClearPublicDomainEvents()
         {
-            _publicDomainEvents?.Clear();
+            _integrationEvents?.Clear();
         }
 
     }

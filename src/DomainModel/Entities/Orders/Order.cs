@@ -7,5 +7,6 @@ namespace DomainModel.Entities.Orders
 {
     public class Order : BaseEntity, IAggregateRoot
     {
+        public int OrderId { get; set; }
     }
 }

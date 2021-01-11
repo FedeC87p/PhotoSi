@@ -9,5 +9,7 @@ namespace DomainModel.Interfaces
     {
         public const string Product = "Products";
         public const string Order = "Orders";
+        public const string Category = "Categories";
+        public const string Option = "Options";
     }
 }

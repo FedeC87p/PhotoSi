@@ -29,8 +29,8 @@ namespace DomainModel.Entities.Products
                 return validator;
             }
 
-            validator.ValidateObject.SetName(categoryDto.Name);
-            validator.ValidateObject.SetDescription(categoryDto.Name);
+            validator.ValidatedObject.SetName(categoryDto.Name);
+            validator.ValidatedObject.SetDescription(categoryDto.Name);
 
             return validator;
         }

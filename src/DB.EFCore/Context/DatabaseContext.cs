@@ -20,7 +20,9 @@ namespace DB.EFCore.Context
         public DbSet<Product> Products { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<Category> Categories { get; set; }
-        public DatabaseContext(IMediator mediator)
+        public DbSet<Option> Options { get; set; }
+
+        public DatabaseContext(IMediator mediator, DbContextOptions options) : base(options)
         {
             _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
         }

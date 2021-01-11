@@ -70,6 +70,6 @@ namespace DomainModel.Validators
             }
         }
 
-        public TResult ValidateObject => IsValid ? _validateObject : default(TResult);
+        public TResult ValidatedObject => IsValid ? _validateObject : default(TResult);
     }
 }

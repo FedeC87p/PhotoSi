@@ -43,9 +43,9 @@ namespace PhotoSi.Command.Product
             {
                 _logger.LogDebug("START");
 
-                var validator = await DomainModel.Entities.Products.Product.CreateCategoryAsync(request.Product, _rules);
+                var validator = await DomainModel.Entities.Products.Product.CreateProductAsync(request.Product, _rules);
 
-                if (validator?.ValidateObject == null || 
+                if (validator?.ValidatedObject == null || 
                     !validator.IsValid)
                 {
                     return new CreateProductResult
@@ -56,14 +56,14 @@ namespace PhotoSi.Command.Product
                 }
 
                 _logger.LogDebug("add to repository");
-                _repository.Add(validator.ValidateObject);
+                _repository.Add(validator.ValidatedObject);
 
                 _logger.LogDebug("SaveChangeAsync");
                 await _repository.SaveChangeAsync();
 
                 return new CreateProductResult
                 {
-                    ProductId = validator.ValidateObject.ProductId,
+                    ProductId = validator.ValidatedObject.ProductId,
                     HaveError = false
                 };
             }

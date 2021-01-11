@@ -8,6 +8,6 @@ namespace DomainModel.Validators
         Task ExecuteCheckAsync(T dtoEntity, TResult validateObject);
         bool IsValid { get; }
         List<ValidatorResult> BrokenRules { get; }
-        TResult ValidateObject { get; }
+        TResult ValidatedObject { get; }
     }
 }

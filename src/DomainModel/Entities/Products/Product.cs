@@ -22,7 +22,7 @@ namespace DomainModel.Entities.Products
         private readonly List<Option> _options = new List<Option>();
         public virtual IReadOnlyCollection<Option> Options => _options?.AsReadOnly();
 
-        public static async Task<IValidator<ProductDto, Product>> CreateCategoryAsync(ProductDto productDto, IEnumerable<IRuleSpecification<ProductDto>> rules)
+        public static async Task<IValidator<ProductDto, Product>> CreateProductAsync(ProductDto productDto, IEnumerable<IRuleSpecification<ProductDto>> rules)
         {
             var validator = new Validator<ProductDto, Product>(rules);
             await validator.ExecuteCheckAsync(productDto, new Product());
@@ -31,7 +31,14 @@ namespace DomainModel.Entities.Products
             {
                 return validator;
             }
-            validator.ValidateObject.SetName(productDto.Name);
+            validator.ValidatedObject.SetName(productDto.Name);
+            validator.ValidatedObject.SetDescription(productDto.Description);
+            validator.ValidatedObject.Note = productDto.Note;
+
+            if (productDto.CategoryId != null)
+            {
+                validator.ValidatedObject.SetCategory(productDto.CategoryId.Value);
+            }
 
             return validator;
         }
@@ -49,8 +56,8 @@ namespace DomainModel.Entities.Products
                 return validator;
             }
 
-            validator.ValidateObject.SetName(productDto.Name);
-            validator.ValidateObject.SetDescription(productDto.Name);
+            validator.ValidatedObject.SetName(productDto.Name);
+            validator.ValidatedObject.SetDescription(productDto.Name);
 
             return validator;
         }
