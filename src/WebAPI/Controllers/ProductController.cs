@@ -52,8 +52,14 @@ namespace WebAPI.Controllers
                 Product = _mapper.Map<ProductDto>(product)
             });
 
-
-            return Created($"productId", productResult.ProductId.Value);
+            if (!productResult.HaveError)
+            {
+                return Created($"productId", productResult.ProductId.Value);
+            }
+            else
+            {
+                return UnprocessableEntity(productResult.Errors);
+            }
         }
     }
 }

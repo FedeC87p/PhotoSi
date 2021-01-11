@@ -1,4 +1,5 @@
 ﻿using DomainModel.Dtos;
+using DomainModel.Entities.Products;
 using DomainModel.Interfaces;
 using DomainModel.Specifications.Rules;
 using MediatR;
@@ -25,17 +26,17 @@ namespace PhotoSi.Command.Product
         {
             private readonly ILogger<CreateProductHandler> _logger;
             private readonly IEnumerable<IRuleSpecification<ProductDto>> _rules;
-            private readonly IMediator _mediator;
-            private readonly IRepository<DomainModel.Entities.Products.Product> _repository;
+            private readonly IProductRepository _productRepository;
+            private readonly IRepository<Option> _optionRepository;
 
             public CreateProductHandler(ILogger<CreateProductHandler> logger,
-                                        IMediator mediator,
-                                        IRepository<DomainModel.Entities.Products.Product> repository, 
+                                        IProductRepository productRepository,
+                                        IRepository<Option> optionRepository,
                                         IEnumerable<IRuleSpecification<ProductDto>> rules)
             {
                 _logger = logger;
-                _mediator = mediator;
-                _repository = repository;
+                _productRepository = productRepository;
+                _optionRepository = optionRepository;
                 _rules = rules;
             }
 
@@ -55,11 +56,44 @@ namespace PhotoSi.Command.Product
                     };
                 }
 
+                var optionsEntity = new List<Option>();
+                var optionsErrors = new List<string>();
+                if (request.Product.OptionsId != null)
+                {
+                    foreach (var id in request.Product.OptionsId)
+                    {
+                        var optionEntity = await _optionRepository.GetByIdAsync(id);
+                        if (optionEntity != null)
+                        {
+                            optionsEntity.Add(optionEntity);
+                        }
+                        else
+                        {
+                            optionsErrors.Add($"Option with id {id} not fpund");
+                        }
+                    }
+                }
+
+                if (optionsErrors.Any())
+                {
+                    return new CreateProductResult
+                    {
+                        Errors = optionsErrors,
+                        HaveError = true
+                    };
+                }
+
+
                 _logger.LogDebug("add to repository");
-                _repository.Add(validator.ValidatedObject);
+                _productRepository.Add(validator.ValidatedObject);
+
+                foreach (var option in optionsEntity)
+                {
+                    _productRepository.LinkOption(validator.ValidatedObject, option);
+                }
 
                 _logger.LogDebug("SaveChangeAsync");
-                await _repository.SaveChangeAsync();
+                await _productRepository.SaveChangeAsync();
 
                 return new CreateProductResult
                 {
