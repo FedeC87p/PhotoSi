@@ -16,6 +16,7 @@
     <ProjectReference Include="..\PhotoSi.AC\PhotoSi.AC.csproj" />
     <ProjectReference Include="..\PhotoSi.Command\PhotoSi.Command.csproj" />
     <ProjectReference Include="..\PhotoSi.Query\PhotoSi.Query.csproj" />
+    <ProjectReference Include="..\PhotoSi.Subcribers\PhotoSi.Subcribers.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,4 +1,5 @@
 ﻿using DomainModel.Dtos;
+using DomainModel.Events;
 using DomainModel.Interfaces;
 using DomainModel.Specifications.Rules;
 using DomainModel.Validators;
@@ -12,7 +13,6 @@ namespace DomainModel.Entities.Orders
     {
         public int OrderId { get; set; }
         public string Code { get; set; }
-        public decimal Total { get; set; }
 
 
         private List<OrderItem> _orderItems = new List<OrderItem>();
@@ -37,8 +37,8 @@ namespace DomainModel.Entities.Orders
             }
 
             validator.ValidatedObject.Code = orderDto.Code;
-            validator.ValidatedObject.Total = orderDto.Total; //In teoria dovrei calcolarlo in case ai prodotti figli
-            validator.ValidatedObject.Code = orderDto.Code;
+
+            validator.ValidatedObject.AddPublicEvent(new OrderConfirmedPublicEvent(validator.ValidatedObject));
 
             return validator;
         }

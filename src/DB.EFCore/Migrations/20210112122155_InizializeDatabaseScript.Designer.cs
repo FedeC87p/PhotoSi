@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DB.EFCore.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20210112112822_InizializeDatabaseScript")]
+    [Migration("20210112122155_InizializeDatabaseScript")]
     partial class InizializeDatabaseScript
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,9 +24,6 @@ namespace DB.EFCore.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Code")
-                        .HasColumnType("TEXT");
-
-                    b.Property<decimal>("Total")
                         .HasColumnType("TEXT");
 
                     b.HasKey("OrderId");
@@ -51,9 +48,6 @@ namespace DB.EFCore.Migrations
 
                     b.Property<int>("Quantity")
                         .HasColumnType("INTEGER");
-
-                    b.Property<decimal>("UnitPrice")
-                        .HasColumnType("TEXT");
 
                     b.HasKey("OrderItemId");
 

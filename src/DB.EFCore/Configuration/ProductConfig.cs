@@ -18,7 +18,7 @@ namespace DB.EFCore.Configuration
             entity.HasMany(p => p.Options).WithMany(p => p.Products);
 
             entity.Ignore(b => b.DomainEvents);
-            entity.Ignore(b => b.IntegrationEvents);
+            entity.Ignore(b => b.PublicEvents);
         }
     }
 }

@@ -4,11 +4,11 @@
       "Serilog.Sinks.Console"
     ],
     "MinimumLevel": {
-      "Default": "Error",
+      "Default": "Debug",
       "Override": {
         "Microsoft": "Warning",
         "System": "Warning",
-        "Microsoft.EntityFrameworkCore.Database": "Warning",
+        "Microsoft.EntityFrameworkCore": "Warning",
         "Microsoft.AspNetCore": "Warning"
       }
     },

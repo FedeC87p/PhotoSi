@@ -14,7 +14,7 @@ namespace DB.EFCore.Configuration
             entity.HasKey(p => p.CategoryId);
 
             entity.Ignore(b => b.DomainEvents);
-            entity.Ignore(b => b.IntegrationEvents);
+            entity.Ignore(b => b.PublicEvents);
         }
     }
 }

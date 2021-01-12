@@ -1,9 +1,11 @@
 ﻿using DomainModel.Dtos;
+using DomainModel.Events;
 using DomainModel.Specifications.Rules;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using PhotoSi.Command.Product;
 using PhotoSi.Interfaces.Mediator;
+using PhotoSi.Subcribers;
 using SpecificationPattern.Rules;
 using System;
 using System.Collections.Generic;
@@ -52,10 +54,10 @@ namespace PhotoSi.AC.Modules
             //CQRS
             List<Assembly> assemblies = new List<Assembly>
             {
-                //typeof(NodeEndPointReferenceChangedPublicEvent).GetTypeInfo().Assembly, //DomainEvent
+                typeof(OrderConfirmedPublicEvent).GetTypeInfo().Assembly, //Event
                 typeof(GetAllProductQuery).GetTypeInfo().Assembly, //Query
                 typeof(CreateProductCommand).GetTypeInfo().Assembly, //Command
-                //typeof(NodeEndPointReferenceChangedHandler).GetTypeInfo().Assembly //Subcribers
+                typeof(OrderCreatedHandler).GetTypeInfo().Assembly //Subcribers
             };
             services.AddMediatR(assemblies.Distinct().ToArray());
 

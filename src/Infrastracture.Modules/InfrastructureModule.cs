@@ -1,10 +1,12 @@
 ﻿using DB.EFCore.Context;
 using DB.EFCore.Repositories;
 using DomainModel.Interfaces;
+using FakeSendMail;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using PhotoSi.Interfaces;
 using PhotoSi.Interfaces.Configuration;
 using System;
 using System.IO;
@@ -44,7 +46,9 @@ namespace Infrastracture.Modules
             //Repository
             services.AddTransient(typeof(IRepository<>), typeof(GenericRepository<>));
             services.AddTransient<IProductRepository, ProductRepository>();
-            
+
+            //Fake Mail
+            services.AddSingleton<ISendMail, SendMail>();
         }
     }
 }

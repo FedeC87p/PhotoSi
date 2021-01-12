@@ -12,8 +12,8 @@ namespace DomainModel.Entities
         private List<INotification> _domainEvents;
         public IReadOnlyCollection<INotification> DomainEvents => _domainEvents?.AsReadOnly();
 
-        private List<IPublicEvent> _integrationEvents;
-        public IReadOnlyCollection<IPublicEvent> IntegrationEvents => _integrationEvents?.AsReadOnly();
+        private List<IPublicEvent> _publicEvents;
+        public IReadOnlyCollection<IPublicEvent> PublicEvents => _publicEvents?.AsReadOnly();
 
         public void AddDomainEvent(INotification eventItem)
         {
@@ -26,21 +26,21 @@ namespace DomainModel.Entities
             _domainEvents?.Remove(eventItem);
         }
 
-        public void AddIntegrationEvent(IPublicEvent eventItem)
+        public void AddPublicEvent(IPublicEvent eventItem)
         {
-            _integrationEvents = _integrationEvents ?? new List<IPublicEvent>();
-            _integrationEvents.Add(eventItem);
+            _publicEvents = _publicEvents ?? new List<IPublicEvent>();
+            _publicEvents.Add(eventItem);
         }
 
-        public void RemoveIntegrationEvent(IPublicEvent eventItem)
+        public void RemovePublicEvent(IPublicEvent eventItem)
         {
-            _integrationEvents?.Remove(eventItem);
+            _publicEvents?.Remove(eventItem);
         }
 
         public void ClearAllDomainEvents()
         {
             _domainEvents?.Clear();
-            _integrationEvents?.Clear();
+            _publicEvents?.Clear();
         }
 
         public void ClearDomainEvents()
@@ -50,7 +50,7 @@ namespace DomainModel.Entities
 
         public void ClearPublicDomainEvents()
         {
-            _integrationEvents?.Clear();
+            _publicEvents?.Clear();
         }
 
     }

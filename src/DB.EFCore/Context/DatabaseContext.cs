@@ -46,11 +46,14 @@ namespace DB.EFCore.Context
                 .Where(x => x.Entity.DomainEvents != null && x.Entity.DomainEvents.Any())
                 .ToList();
 
+            var entitiesPublic = ChangeTracker.Entries<BaseEntity>()
+                .Where(x => x.Entity.PublicEvents != null && x.Entity.PublicEvents.Any())
+                .ToList();
             if (dispatchDomainEvent) await _mediator.DispatchDomainEventsAsync(entities);
 
             var result = await base.SaveChangesAsync(cancellationToken);
 
-            if (dispatchDomainEvent) await _mediator.DispatchPublicDomainEventsAsync(entities);
+            if (dispatchDomainEvent) await _mediator.DispatchPublicDomainEventsAsync(entitiesPublic);
 
             return result;
         }

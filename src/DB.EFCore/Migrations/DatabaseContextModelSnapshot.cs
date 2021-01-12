@@ -24,9 +24,6 @@ namespace DB.EFCore.Migrations
                     b.Property<string>("Code")
                         .HasColumnType("TEXT");
 
-                    b.Property<decimal>("Total")
-                        .HasColumnType("TEXT");
-
                     b.HasKey("OrderId");
 
                     b.ToTable("Orders");
@@ -49,9 +46,6 @@ namespace DB.EFCore.Migrations
 
                     b.Property<int>("Quantity")
                         .HasColumnType("INTEGER");
-
-                    b.Property<decimal>("UnitPrice")
-                        .HasColumnType("TEXT");
 
                     b.HasKey("OrderItemId");
 

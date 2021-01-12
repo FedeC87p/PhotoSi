@@ -27,7 +27,7 @@ namespace DB.EFCore
             List<EntityEntry<BaseEntity>> entities)
         {
             var publicDomainEvents = entities
-                .SelectMany(x => x.Entity.IntegrationEvents)
+                .SelectMany(x => x.Entity.PublicEvents)
                 .ToList();
 
             entities.ToList()

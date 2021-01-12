@@ -11,7 +11,6 @@ namespace DomainModel.Entities.Orders
         public int OrderItemId { get; protected set; }
         public string Name { get; protected set; }
         public int Quantity { get; protected set; }
-        public decimal UnitPrice { get; protected set; }
         public int ProductId { get; protected set; }
 
         public int OrderId { get; protected set; }
@@ -36,7 +35,6 @@ namespace DomainModel.Entities.Orders
 
             validator.ValidatedObject.Name = orderItemDto.Name;
             validator.ValidatedObject.Quantity = orderItemDto.Quantity;
-            validator.ValidatedObject.UnitPrice = orderItemDto.UnitPrice;
             validator.ValidatedObject.ProductId = orderItemDto.ProductId;
 
             return validator;
