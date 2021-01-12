@@ -3,10 +3,9 @@ using DomainModel.Dtos;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using PhotoSi.Command.Product;
+using PhotoSi.Command.Options;
 using PhotoSi.Interfaces.Mediator;
-using PhotoSi.Query.Product.QueryResult;
-using System;
+using PhotoSi.Query.Options;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using WebAPI.ModelViews.Request;
@@ -15,12 +14,12 @@ namespace WebAPI.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class ProductsController : ApiBaseController
+    public class OptionsController : ApiBaseController
     {
-        private readonly ILogger<ProductsController> _logger;
+        private readonly ILogger<OptionsController> _logger;
         private readonly IMapper _mapper;
 
-        public ProductsController(ILogger<ProductsController> logger,
+        public OptionsController(ILogger<OptionsController> logger,
             IMediatorService mediatorService,
             IMapper mapper)
             : base(mediatorService)
@@ -30,54 +29,54 @@ namespace WebAPI.Controllers
         }
 
         /// <summary>
-        ///     Get product.
+        ///     Get option.
         /// </summary>
-        /// <response code="201">Create node</response>
+        /// <response code="201">Get option</response>
         /// <response code="400">Bad request.</response>
         /// <response code="500">Error.</response>
-        /// <returns>JsonSdmx</returns>
-        [HttpGet("{productId}")]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ProductModelView))]
+        /// <returns></returns>
+        [HttpGet("{optionId}")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(OptionDto))]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> GetProduct(int productId)
+        public async Task<IActionResult> GetOption(int optionId)
         {
-            _logger.LogDebug("START GetProduct");
-            var productResult = await QueryAsync(new GetProductByIdQuery
+            _logger.LogDebug("START GetOption");
+            var optionResult = await QueryAsync(new GetOptionByIdQuery
             {
-                ProductId = productId
+                OptionId = optionId
             });
 
-            if (productResult != null)
+            if (optionResult != null)
             {
-                return Ok(productResult);
+                return Ok(optionResult);
             }
             else
             {
-                return NotFound($"Product id {productId} not found");
+                return NotFound($"Option id {optionId} not found");
             }
         }
 
         /// <summary>
-        ///     Get products.
+        ///     Get options.
         /// </summary>
-        /// <response code="200">Get product</response>
+        /// <response code="200">Get options</response>
         /// <response code="400">Bad request.</response>
         /// <response code="500">Error.</response>
         /// <returns></returns>
         [HttpGet]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<ProductDto>))]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<OptionDto>))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> GetProducts()
+        public async Task<IActionResult> GetOptions()
         {
-            _logger.LogDebug("START GetProducts");
-            var productResult = await QueryAsync(new GetAllProductQuery());
+            _logger.LogDebug("START GetOptions");
+            var options = await QueryAsync(new GetAllOptionQuery());
 
-            return Ok(productResult);
+            return Ok(options);
         }
 
         /// <summary>
-        ///     Create new product.
+        ///     Create new option.
         /// </summary>
         /// <response code="201">Create product</response>
         /// <response code="400">Bad request.</response>
@@ -87,17 +86,49 @@ namespace WebAPI.Controllers
         [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(int))]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> CreateProduct([FromBody] ProductCreateRequest product)
+        public async Task<IActionResult> CreateOption([FromBody] OptionCreateRequest option)
         {
-            _logger.LogDebug("START CreateProduct");
-            var productResult = await CommandAsync(new CreateProductCommand
+            _logger.LogDebug("START CreateOption");
+            var optionResult = await CommandAsync(new CreateOptionCommand
             {
-                Product = _mapper.Map<ProductDto>(product)
+                Option = _mapper.Map<OptionDto>(option)
+            });
+
+            if (!optionResult.HaveError)
+            {
+                return Created($"oiptions/{optionResult.OptionId.Value}", optionResult.OptionId.Value);
+            }
+            else
+            {
+                return UnprocessableEntity(optionResult.Errors);
+            }
+        }
+
+        /// <summary>
+        ///     Update option.
+        /// </summary>
+        /// <response code="204">Edit option</response>
+        /// <response code="400">Bad request.</response>
+        /// <response code="500">Error.</response>
+        /// <returns></returns>
+        [HttpPut("{optionId}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> UpdateOption([FromBody] OptionUpdateRequest option, int optionId)
+        {
+            _logger.LogDebug("START UpdateOption");
+
+            var optionDto = _mapper.Map<OptionDto>(option);
+            optionDto.OptionId = optionId;
+            var productResult = await CommandAsync(new UpdateOptionCommand
+            {
+                Option = optionDto
             });
 
             if (!productResult.HaveError)
             {
-                return Created($"products/{productResult.ProductId.Value}", productResult.ProductId.Value);
+                return NoContent();
             }
             else
             {
@@ -106,63 +137,31 @@ namespace WebAPI.Controllers
         }
 
         /// <summary>
-        ///     Update new product.
+        ///     Delete option.
         /// </summary>
-        /// <response code="204">Edit product</response>
+        /// <response code="204">Delete option</response>
         /// <response code="400">Bad request.</response>
         /// <response code="500">Error.</response>
         /// <returns></returns>
-        [HttpPut("{productId}")]
+        [HttpDelete("{optionId}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> UpdateProduct([FromBody] ProductUpdateRequest product, int productId)
+        public async Task<IActionResult> DeleteProduct(int optionId)
         {
             _logger.LogDebug("START UpdateProduct");
-
-            var productDto = _mapper.Map<ProductDto>(product);
-            productDto.ProductId = productId;
-            var productResult = await CommandAsync(new UpdateProductCommand
+            var optionResult = await CommandAsync(new DeleteOptionCommand
             {
-                Product = productDto
+                OptionId = optionId
             });
 
-            if (!productResult.HaveError)
+            if (!optionResult.HaveError)
             {
                 return NoContent();
             }
             else
             {
-                return UnprocessableEntity(productResult.Errors);
-            }
-        }
-
-        /// <summary>
-        ///     Delete product.
-        /// </summary>
-        /// <response code="204">Delete product</response>
-        /// <response code="400">Bad request.</response>
-        /// <response code="500">Error.</response>
-        /// <returns></returns>
-        [HttpDelete("{productId}")]
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> DeleteProduct(int productId)
-        {
-            _logger.LogDebug("START DeleteProduct");
-            var productResult = await CommandAsync(new DeleteProductCommand
-            {
-                ProductId = productId
-            });
-
-            if (!productResult.HaveError)
-            {
-                return NoContent();
-            }
-            else
-            {
-                return UnprocessableEntity(productResult.Errors);
+                return UnprocessableEntity(optionResult.Errors);
             }
         }
     }

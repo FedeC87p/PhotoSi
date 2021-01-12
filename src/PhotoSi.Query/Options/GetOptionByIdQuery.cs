@@ -16,7 +16,7 @@ namespace PhotoSi.Query.Options
         {
         }
 
-        public int ProductId { get; set; }
+        public int OptionId { get; set; }
 
         public class GetOptionByIdHandler : IRequestHandler<GetOptionByIdQuery, OptionDto>
         {
@@ -38,7 +38,7 @@ namespace PhotoSi.Query.Options
                 //Qua era meglio usare Dapper per fare una query ottimizzata per la get
                 _logger.LogDebug("START");
 
-                var option = await _optionRepository.GetByIdAsync(request.ProductId);
+                var option = await _optionRepository.GetByIdAsync(request.OptionId);
 
                 if (option == null)
                 {

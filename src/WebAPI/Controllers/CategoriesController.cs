@@ -3,8 +3,10 @@ using DomainModel.Dtos;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using PhotoSi.Command.Categories;
 using PhotoSi.Command.Product;
 using PhotoSi.Interfaces.Mediator;
+using PhotoSi.Query.Categories;
 using PhotoSi.Query.Product.QueryResult;
 using System;
 using System.Collections.Generic;
@@ -15,12 +17,12 @@ namespace WebAPI.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class ProductsController : ApiBaseController
+    public class CategoriesController : ApiBaseController
     {
-        private readonly ILogger<ProductsController> _logger;
+        private readonly ILogger<CategoriesController> _logger;
         private readonly IMapper _mapper;
 
-        public ProductsController(ILogger<ProductsController> logger,
+        public CategoriesController(ILogger<CategoriesController> logger,
             IMediatorService mediatorService,
             IMapper mapper)
             : base(mediatorService)
@@ -30,54 +32,54 @@ namespace WebAPI.Controllers
         }
 
         /// <summary>
-        ///     Get product.
+        ///     Get category.
         /// </summary>
-        /// <response code="201">Create node</response>
+        /// <response code="201">Get category</response>
         /// <response code="400">Bad request.</response>
         /// <response code="500">Error.</response>
-        /// <returns>JsonSdmx</returns>
-        [HttpGet("{productId}")]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ProductModelView))]
+        /// <returns></returns>
+        [HttpGet("{categoryId}")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(CategoryDto))]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> GetProduct(int productId)
+        public async Task<IActionResult> GetCategory(int categoryId)
         {
-            _logger.LogDebug("START GetProduct");
-            var productResult = await QueryAsync(new GetProductByIdQuery
+            _logger.LogDebug("START GetCategory");
+            var categoryResult = await QueryAsync(new GetCategoryByIdQuery
             {
-                ProductId = productId
+                CategoryId = categoryId
             });
 
-            if (productResult != null)
+            if (categoryResult != null)
             {
-                return Ok(productResult);
+                return Ok(categoryResult);
             }
             else
             {
-                return NotFound($"Product id {productId} not found");
+                return NotFound($"Category id {categoryId} not found");
             }
         }
 
         /// <summary>
-        ///     Get products.
+        ///     Get categories.
         /// </summary>
-        /// <response code="200">Get product</response>
+        /// <response code="200">Get categories</response>
         /// <response code="400">Bad request.</response>
         /// <response code="500">Error.</response>
         /// <returns></returns>
         [HttpGet]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<ProductDto>))]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<CategoryDto>))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> GetProducts()
+        public async Task<IActionResult> GetCategories()
         {
-            _logger.LogDebug("START GetProducts");
-            var productResult = await QueryAsync(new GetAllProductQuery());
+            _logger.LogDebug("START GetCategories");
+            var categories = await QueryAsync(new GetAllCategoryQuery());
 
-            return Ok(productResult);
+            return Ok(categories);
         }
 
         /// <summary>
-        ///     Create new product.
+        ///     Create new category.
         /// </summary>
         /// <response code="201">Create product</response>
         /// <response code="400">Bad request.</response>
@@ -87,17 +89,49 @@ namespace WebAPI.Controllers
         [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(int))]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> CreateProduct([FromBody] ProductCreateRequest product)
+        public async Task<IActionResult> CreateProduct([FromBody] CategoryCreateRequest category)
         {
-            _logger.LogDebug("START CreateProduct");
-            var productResult = await CommandAsync(new CreateProductCommand
+            _logger.LogDebug("START CreateNode");
+            var categoryResult = await CommandAsync(new CreateCategoryCommand
             {
-                Product = _mapper.Map<ProductDto>(product)
+                Category = _mapper.Map<CategoryDto>(category)
+            });
+
+            if (!categoryResult.HaveError)
+            {
+                return Created($"categories/{categoryResult.CategoryId.Value}", categoryResult.CategoryId.Value);
+            }
+            else
+            {
+                return UnprocessableEntity(categoryResult.Errors);
+            }
+        }
+
+        /// <summary>
+        ///     Update category.
+        /// </summary>
+        /// <response code="204">Edit category</response>
+        /// <response code="400">Bad request.</response>
+        /// <response code="500">Error.</response>
+        /// <returns></returns>
+        [HttpPut("{categoryId}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> UpdateCategory([FromBody] CategoryUpdateRequest category, int categoryId)
+        {
+            _logger.LogDebug("START UpdateCategory");
+
+            var categoryDto = _mapper.Map<CategoryDto>(category);
+            categoryDto.CategoryId = categoryId;
+            var productResult = await CommandAsync(new UpdateCategoryCommand
+            {
+                Category = categoryDto
             });
 
             if (!productResult.HaveError)
             {
-                return Created($"products/{productResult.ProductId.Value}", productResult.ProductId.Value);
+                return NoContent();
             }
             else
             {
@@ -106,63 +140,31 @@ namespace WebAPI.Controllers
         }
 
         /// <summary>
-        ///     Update new product.
+        ///     Delete category.
         /// </summary>
-        /// <response code="204">Edit product</response>
+        /// <response code="204">Delete category</response>
         /// <response code="400">Bad request.</response>
         /// <response code="500">Error.</response>
         /// <returns></returns>
-        [HttpPut("{productId}")]
+        [HttpDelete("{categoryId}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> UpdateProduct([FromBody] ProductUpdateRequest product, int productId)
+        public async Task<IActionResult> DeleteProduct(int categoryId)
         {
             _logger.LogDebug("START UpdateProduct");
-
-            var productDto = _mapper.Map<ProductDto>(product);
-            productDto.ProductId = productId;
-            var productResult = await CommandAsync(new UpdateProductCommand
+            var categoryResult = await CommandAsync(new DeleteCategoryCommand
             {
-                Product = productDto
+                CategoryId = categoryId
             });
 
-            if (!productResult.HaveError)
+            if (!categoryResult.HaveError)
             {
                 return NoContent();
             }
             else
             {
-                return UnprocessableEntity(productResult.Errors);
-            }
-        }
-
-        /// <summary>
-        ///     Delete product.
-        /// </summary>
-        /// <response code="204">Delete product</response>
-        /// <response code="400">Bad request.</response>
-        /// <response code="500">Error.</response>
-        /// <returns></returns>
-        [HttpDelete("{productId}")]
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> DeleteProduct(int productId)
-        {
-            _logger.LogDebug("START DeleteProduct");
-            var productResult = await CommandAsync(new DeleteProductCommand
-            {
-                ProductId = productId
-            });
-
-            if (!productResult.HaveError)
-            {
-                return NoContent();
-            }
-            else
-            {
-                return UnprocessableEntity(productResult.Errors);
+                return UnprocessableEntity(categoryResult.Errors);
             }
         }
     }

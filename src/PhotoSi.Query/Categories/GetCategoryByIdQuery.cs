@@ -10,42 +10,42 @@ using System.Threading.Tasks;
 
 namespace PhotoSi.Query.Categories
 {
-    public class GetCategoryByIdQuery : IQuery<OptionDto>
+    public class GetCategoryByIdQuery : IQuery<CategoryDto>
     {
         public GetCategoryByIdQuery()
         {
         }
 
-        public int ProductId { get; set; }
+        public int CategoryId { get; set; }
 
-        public class GetOptionByIdHandler : IRequestHandler<GetCategoryByIdQuery, OptionDto>
+        public class GetCategoryByIdHandler : IRequestHandler<GetCategoryByIdQuery, CategoryDto>
         {
-            private readonly ILogger<GetOptionByIdHandler> _logger;
-            private readonly IRepository<Option> _optionRepository;
+            private readonly ILogger<GetCategoryByIdHandler> _logger;
+            private readonly IRepository<Category> _categoryRepository;
             private readonly IMapper _mapper;
 
-            public GetOptionByIdHandler(ILogger<GetOptionByIdHandler> logger,
-                                        IRepository<Option> optionRepository,
+            public GetCategoryByIdHandler(ILogger<GetCategoryByIdHandler> logger,
+                                        IRepository<Category> categoryRepository,
                                         IMapper mapper)
             {
                 _logger = logger;
-                _optionRepository = optionRepository;
+                _categoryRepository = categoryRepository;
                 _mapper = mapper;
             }
 
-            public async Task<OptionDto> Handle(GetCategoryByIdQuery request, CancellationToken cancellationToken)
+            public async Task<CategoryDto> Handle(GetCategoryByIdQuery request, CancellationToken cancellationToken)
             {
                 //Qua era meglio usare Dapper per fare una query ottimizzata per la get
                 _logger.LogDebug("START");
 
-                var option = await _optionRepository.GetByIdAsync(request.ProductId);
+                var category = await _categoryRepository.GetByIdAsync(request.CategoryId);
 
-                if (option == null)
+                if (category == null)
                 {
                     return null;
                 }
 
-                return _mapper.Map<OptionDto>(option);
+                return _mapper.Map<CategoryDto>(category);
             }
 
         }
