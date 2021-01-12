@@ -15,14 +15,14 @@ namespace DomainModel.Entities.Orders
         public decimal Total { get; set; }
 
 
-        private List<OrderItem> _orderItems;
+        private List<OrderItem> _orderItems = new List<OrderItem>();
         public virtual IReadOnlyCollection<OrderItem> OrderItems => _orderItems?.ToList();
 
         protected Order() { }
 
-        public static async Task<IValidator<OrderDto, Order>> CreateOrderAsync(OrderDto orderDto)
+        public static async Task<IValidator<OrderDto, Order>> CreateOrderAsync(OrderDto orderDto, List<IRuleSpecification<OrderDto>> rules)
         {
-            var rules = new List<IRuleSpecification<OrderDto>>();
+            rules = rules ?? new List<IRuleSpecification<OrderDto>>();
 
             var validator = new Validator<OrderDto, Order>(rules);
             await validator.ExecuteCheckAsync(orderDto, new Order());
@@ -36,7 +36,12 @@ namespace DomainModel.Entities.Orders
                 return validator;
             }
 
-            return null;
+            validator.ValidatedObject.Code = orderDto.Code;
+            validator.ValidatedObject.Total = orderDto.Total; //In teoria dovrei calcolarlo in case ai prodotti figli
+            validator.ValidatedObject.Code = orderDto.Code;
+
+
+            return validator;
         }
 
         static private void validateCustomBusinessRulesOrderProducts(OrderDto orderDto, Validator<OrderDto, Order> validator)
@@ -56,22 +61,31 @@ namespace DomainModel.Entities.Orders
             }
         }
 
-        static private async Task createOrderItemAsync(OrderDto orderDto, Validator<OrderDto, Order> validator)
+        static private async Task createOrderItemAsync(OrderDto orderDto, Validator<OrderDto, Order> orderValidator)
         {
             List<string> errors = null;
+            if (orderDto.ProductItems == null)
+            {
+                return;
+            }
+
             foreach (var item in orderDto.ProductItems)
             {
-                var validatorProduct = await OrderItem.CreateOrderItemAsync(item);
+                var validatorSingleItem = await OrderItem.CreateOrderItemAsync(item);
 
-                if (!validatorProduct.IsValid)
+                if (!validatorSingleItem.IsValid)
                 {
-                    errors = validatorProduct.BrokenRules.SelectMany(i => i.Errors.Select(k => k.Code)).ToList();
+                    errors = validatorSingleItem.BrokenRules.SelectMany(i => i.Errors.Select(k => k.Code)).ToList();
                 }
+                else
+                {
+                    orderValidator.ValidatedObject._orderItems.Add(validatorSingleItem.ValidatedObject);
+                }  
             }
             if (errors != null &&
                 errors.Count > 0)
             {
-                validator.AddCustomBrokenRule(errors.Select(i => new ValidatorError
+                orderValidator.AddCustomBrokenRule(errors.Select(i => new ValidatorError
                 {
                     Code = "InvalidProductItem",
                     Detail = new ValidatorErrorDetail { Messages = new List<string> { i } },
@@ -81,6 +95,25 @@ namespace DomainModel.Entities.Orders
                 );
             }
         }
+
+        //ORDINE TOTALMENTE IMMUTABLE
+        //public void AddOrderItem(OrderItem orderItem)
+        //{
+        //    if (OrderItems == null)
+        //    {
+        //        _orderItems = new List<OrderItem>();
+        //    }
+        //    _orderItems.Add(orderItem);
+        //}
+
+        //public void RemoveOrderItem(OrderItem orderItem)
+        //{
+        //    if (OrderItems == null)
+        //    {
+        //        return;
+        //    }
+        //    _orderItems.Remove(orderItem);
+        //}
 
     }
 }

@@ -271,7 +271,33 @@ namespace WebAPI.BackgroundService
                 return;
             }
 
+            var orderDto = new OrderDto
+            {
+                Code = "12345",
+                ProductItems = new List<OrderItemDto>
+              {
+                  new OrderItemDto {
+                      Name = "Pantanoni Lana",
+                      ProductId = 1,
+                      OptionItems = new List<OrderItemOptionDto> {
+                          new OrderItemOptionDto { OptionId = 1, Name = "Colore", Value = "Blu" }
+                      }
+                  },
+                  new OrderItemDto {
+                      Name = "Camicia estiva",
+                      ProductId = 3,
+                      OptionItems = new List<OrderItemOptionDto> {
+                          new OrderItemOptionDto { OptionId = 1, Name = "Colore", Value = "Celeste" },
+                          new OrderItemOptionDto { OptionId = 2, Name = "Taglia", Value = "XL" }
+                      }
+                  }
+              }
+            };
+
+            var order = (await Order.CreateOrderAsync(orderDto, null)).ValidatedObject;
+            orderRepository.Add(order);
+            await orderRepository.SaveChangeAsync(); //Fatto ogni volta per garantirmi l'id crescente
         }
-        
+
     }
 }

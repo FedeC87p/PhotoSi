@@ -17,7 +17,7 @@ namespace DomainModel.Entities.Orders
         public int OrderId { get; protected set; }
         public virtual Order Order { get; protected set; }
 
-        private List<OrderItemOption> _itemOptions;
+        private List<OrderItemOption> _itemOptions = new List<OrderItemOption>();
         public virtual IReadOnlyCollection<OrderItemOption> ItemOptions => _itemOptions?.ToList();
 
         protected OrderItem() { }
@@ -42,9 +42,14 @@ namespace DomainModel.Entities.Orders
             return validator;
         }
 
-        static private async Task createOptionItemAsync(OrderItemDto orderItemDto, Validator<OrderItemDto, OrderItem> validator)
+        static private async Task createOptionItemAsync(OrderItemDto orderItemDto, Validator<OrderItemDto, OrderItem> validatorItem)
         {
             List<string> errors = null;
+
+            if (orderItemDto.OptionItems == null)
+            {
+                return;
+            }
             foreach (var item in orderItemDto.OptionItems)
             {
                 var validatorOption = await OrderItemOption.CreateOptionItemAsync(item);
@@ -53,11 +58,15 @@ namespace DomainModel.Entities.Orders
                 {
                     errors = validatorOption.BrokenRules.SelectMany(i => i.Errors.Select(k => k.Code)).ToList();
                 }
+                else
+                {
+                    validatorItem.ValidatedObject._itemOptions.Add(validatorOption.ValidatedObject);
+                }
             }
             if (errors != null &&
                 errors.Count > 0)
             {
-                validator.AddCustomBrokenRule(errors.Select(i => new ValidatorError
+                validatorItem.AddCustomBrokenRule(errors.Select(i => new ValidatorError
                 {
                     Code = "InvalidOrderItem",
                     Detail = new ValidatorErrorDetail { Messages = new List<string> { i } },
