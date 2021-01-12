@@ -16,9 +16,9 @@ namespace DB.EFCore.Configuration
         {
             entity.ToTable(TableNames.OrderItemOption);
 
-            entity.HasKey(p => p.OrderItemOptionId);
+            entity.HasKey("OrderItemOptionId", "OrderItemId");
 
-            entity.HasOne(p => p.OrderItem).WithOne().OnDelete(DeleteBehavior.Cascade);
+            entity.HasOne(p => p.OrderItem).WithMany(p => p.ItemOptions).OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

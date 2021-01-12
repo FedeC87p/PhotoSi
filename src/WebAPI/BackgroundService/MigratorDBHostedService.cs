@@ -1,5 +1,6 @@
 ﻿using DB.EFCore.Context;
 using DomainModel.Dtos;
+using DomainModel.Entities.Orders;
 using DomainModel.Entities.Products;
 using DomainModel.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -52,8 +53,10 @@ namespace WebAPI.BackgroundService
                     var productRepository = scope.ServiceProvider.GetRequiredService<IProductRepository>();
                     var categoryRepository = scope.ServiceProvider.GetRequiredService<IRepository<Category>>();
                     var optionRepository = scope.ServiceProvider.GetRequiredService<IRepository<Option>>();
+                    var orderRepository = scope.ServiceProvider.GetRequiredService<IRepository<Order>>();
 
                     await seedDatabaseForProduct(productRepository, categoryRepository, optionRepository);
+                    await seedDatabaseForOrder(orderRepository);
                 }
                 catch (Exception ex)
                 {
@@ -255,5 +258,20 @@ namespace WebAPI.BackgroundService
 
             await optionRepository.SaveChangeAsync();
         }
+
+        private async Task seedDatabaseForOrder(IRepository<Order> orderRepository)
+        {
+            //Per fare presto (essendo un progettino di dimostrazione)
+            //Popolo il database nel caso in cui non trovo nessun ordine
+            //Utilizzo direttamente ListAll per fare prima a scrivere il codice anche se sarà piu lento
+            var orders = await orderRepository.ListAllAsync();
+
+            if (orders.Count > 0)
+            {
+                return;
+            }
+
+        }
+        
     }
 }

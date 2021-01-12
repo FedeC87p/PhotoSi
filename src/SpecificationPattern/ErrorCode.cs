@@ -10,5 +10,6 @@ namespace SpecificationPattern
     {
         public const string DuplicateName = "DuplicateName"; 
         public const string LenghtName50 = "LenghtName50";
+        public const string TooManyProducrForCategory = "TooManyProducrForCategory";
     }
 }

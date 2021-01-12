@@ -70,6 +70,11 @@ namespace DomainModel.Validators
             }
         }
 
+        public void AddCustomBrokenRule(List<ValidatorError> validatorErrors)
+        {
+            _ruleResults.Add(new ValidatorResult { IsSatisfied = false, Errors = validatorErrors });
+        }
+
         public TResult ValidatedObject => IsValid ? _validateObject : default(TResult);
     }
 }
