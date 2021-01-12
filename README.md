@@ -52,7 +52,7 @@ Un ordine ha una relazione con N prodotti, che a loro volta potranno avere N opz
 * 2. Impostare come progetto di startup "WebAPI"
 * 3. Far partire la solution facendo play
 * 4. Al primo avviso verrà creato automaticamente il database (vedi configurazioni in appSetting.json)
-* 5. ATTENZIONE: Ad ogni avviso se non sono presenti prodotti nel database verrano creati automaticamente. La stessa logica è applicata per gli ordini.
+* 5. ATTENZIONE: Ad ogni avvio se non sono presenti prodotti nel database verrano creati automaticamente. La stessa logica è applicata per gli ordini.
 
 
 ## Acluni esempi di chiamate rest REST CALL
