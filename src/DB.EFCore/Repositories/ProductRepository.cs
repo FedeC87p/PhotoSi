@@ -1,6 +1,7 @@
 ﻿using DB.EFCore.Context;
 using DomainModel.Entities.Products;
 using DomainModel.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,17 +18,12 @@ namespace DB.EFCore.Repositories
         }
         public void LinkCategory(Product product, Category category)
         {
-            product.SetCategory(category);
+            product.SetCategory(category.CategoryId);
         }
 
         public void LinkOption(Product product, Option option)
         {
             product.AssignOption(option);
-        }
-
-        public void UnLinkCategory(Product product)
-        {
-            product.SetCategory(null);
         }
 
         public void UnLinkOption(Product product, Option option)

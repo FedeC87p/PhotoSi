@@ -11,7 +11,6 @@ namespace DomainModel.Interfaces
     {
         void LinkCategory(Product product, Category category);
         void LinkOption(Product product, Option option);
-        void UnLinkCategory(Product product);
         void UnLinkOption(Product product, Option option);
     }
 }

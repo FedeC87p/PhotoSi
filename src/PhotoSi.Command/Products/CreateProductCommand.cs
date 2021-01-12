@@ -85,6 +85,7 @@ namespace PhotoSi.Command.Product
 
 
                 _logger.LogDebug("add to repository");
+                validator.ValidatedObject.SetCategory(request.Product.ProductId);
                 _productRepository.Add(validator.ValidatedObject);
 
                 foreach (var option in optionsEntity)

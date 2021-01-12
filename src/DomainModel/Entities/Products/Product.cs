@@ -73,22 +73,13 @@ namespace DomainModel.Entities.Products
             Description = description;
         }
 
-        public void SetCategory(Category category)
-        {
-            if (category == null)
-            {
-                return;
-            }
-            CategoryId = category.CategoryId;
-        }
-
         public void SetCategory(int categoryId)
         {
             CategoryId = categoryId;
         }
 
         public void AssignOption(Option option)
-        {
+        { //Qua stiamo puntando un IAggregateRoot all'intenro di un'altro, forse meglio portare questa funzione in un Services che si occupasse di questo 
             if (option == null)
             {
                 return;
@@ -106,17 +97,11 @@ namespace DomainModel.Entities.Products
 
         public void UnAssignOption(Option option)
         {
+            //Qua stiamo puntando un IAggregateRoot all'intenro di un'altro, forse meglio portare questa funzione in un Services che si occupasse di questo
+
             if (Options != null) //Laxy
             {
                 _options.RemoveAll(i => i.OptionId == option.OptionId);
-            }
-        }
-
-        public void UnAssignAllOptions()
-        {
-            if (Options != null) //Laxy
-            {
-                _options.Clear();
             }
         }
     }

@@ -56,7 +56,7 @@ namespace PhotoSi.Command.Product
 
                 var validator = await productToEdit.EditAsync(request.Product, _rules);
 
-                if (validator?.ValidatedObject == null || 
+                if (validator?.ValidatedObject == null ||
                     !validator.IsValid)
                 {
                     return new UpdateProductResult
@@ -97,14 +97,8 @@ namespace PhotoSi.Command.Product
 
                 _logger.LogDebug("edit to repository");
                 productToEdit.SetCategory(request.Product.CategoryId);//Qui si potrebbe controllare che la categoria sia valida, anzichè aspettare l'eccezione dal repository
-                productToEdit.UnAssignAllOptions(); //Sarebbe meglio aggiungere quelle non già presenti (e rimuovere quelle no più presenti)
+                assignOptions(validator.ValidatedObject, optionsEntity);
                 _productRepository.Update(productToEdit);
-
-                
-                foreach (var option in optionsEntity)
-                {
-                    _productRepository.LinkOption(validator.ValidatedObject, option);
-                }
 
                 _logger.LogDebug("SaveChangeAsync");
                 await _productRepository.SaveChangeAsync();
@@ -116,6 +110,24 @@ namespace PhotoSi.Command.Product
                 };
             }
 
+            private void assignOptions(DomainModel.Entities.Products.Product product, List<Option> optionsEntity)
+            {
+                var removeOption = new List<Option>();
+                foreach (var option in product.Options)
+                {
+                    if (!optionsEntity.Any(i => i.OptionId == option.OptionId))
+                    {
+                        removeOption.Add(option);
+                    }
+                }
+                removeOption.ForEach(i => _productRepository.UnLinkOption(product, i));
+                
+
+                foreach (var option in optionsEntity)
+                {
+                    _productRepository.LinkOption(product, option);
+                }
+            }
         }
     }
 }
