@@ -85,7 +85,7 @@ namespace PhotoSi.Command.Product
 
 
                 _logger.LogDebug("add to repository");
-                validator.ValidatedObject.SetCategory(request.Product.ProductId);
+                validator.ValidatedObject.SetCategory(request.Product.CategoryId); //Invece di aspetatre l'eccezione dovrei aggiungere il controllo sulla categoria
                 _productRepository.Add(validator.ValidatedObject);
 
                 foreach (var option in optionsEntity)
