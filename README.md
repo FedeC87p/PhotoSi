@@ -45,6 +45,7 @@ Un ordine ha una relazione con N prodotti, che a loro volta potranno avere N opz
 * [SQLite] 
 * [Mediator] 
 * [Serilog] 
+* [AutoMapper] 
 
 
 ## Configure, Deploy and Run the project
