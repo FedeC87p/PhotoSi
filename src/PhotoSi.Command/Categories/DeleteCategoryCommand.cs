@@ -5,6 +5,7 @@ using Microsoft.Extensions.Logging;
 using PhotoSi.Command.Categories.CommandResult;
 using PhotoSi.Interfaces.Mediator;
 using SpecificationPattern;
+using SpecificationPattern.Query;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;

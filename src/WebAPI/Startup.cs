@@ -9,7 +9,6 @@ using Microsoft.OpenApi.Models;
 using PhotoSi.AC.Modules;
 using PhotoSi.Interfaces.Configuration;
 using WebAPI.BackgroundService;
-using WebAPI.ModelViews;
 
 namespace WebAPI
 {
@@ -28,10 +27,16 @@ namespace WebAPI
         {
             services.Configure<DatabaseConfig>(Configuration.GetSection("Database"));
             services.Configure<GeneralConfig>(Configuration.GetSection("General"));
+            services.Configure<EntityConfig>(Configuration.GetSection("Entity"));
 
             configureCORS(services);
 
+            //Application Core
             ApplicationCore.ConfigureApplicationCore(services);
+            var validationRulesConfig = Configuration.GetSection("Entity:ValidationRules").Get<EntityConfig.ValidationRulesConfig>();
+            ApplicationCore.ConfigureValidationRules(services, validationRulesConfig);
+
+            //Infrastructure
             InfrastructureModule.ConfiguresInfrastructure(services, Configuration, HostEnvironment.ContentRootPath);
 
             services.AddHostedService<MigratorDBHostedService>();

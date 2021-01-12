@@ -54,7 +54,7 @@ namespace DomainModel.Entities.Products
             }
 
             validator.ValidatedObject.SetName(productDto.Name);
-            validator.ValidatedObject.SetDescription(productDto.Name);
+            validator.ValidatedObject.SetDescription(productDto.Description);
             validator.ValidatedObject.Note = productDto.Note;
 
 
@@ -94,7 +94,7 @@ namespace DomainModel.Entities.Products
                 return;
             }
 
-            var exist = _options?.Any(i => i.OptionId == option.OptionId);
+            var exist = Options?.Any(i => i.OptionId == option.OptionId); //Laxy
             if (exist.HasValue && exist.Value)
             {
                 return;
@@ -106,12 +106,18 @@ namespace DomainModel.Entities.Products
 
         public void UnAssignOption(Option option)
         {
-            _options.RemoveAll(i => i.OptionId == option.OptionId);
+            if (Options != null) //Laxy
+            {
+                _options.RemoveAll(i => i.OptionId == option.OptionId);
+            }
         }
 
         public void UnAssignAllOptions()
         {
-            _options.Clear();
+            if (Options != null) //Laxy
+            {
+                _options.Clear();
+            }
         }
     }
 }

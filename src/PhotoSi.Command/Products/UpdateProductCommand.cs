@@ -42,7 +42,7 @@ namespace PhotoSi.Command.Product
 
             public async Task<UpdateProductResult> Handle(UpdateProductCommand request, CancellationToken cancellationToken)
             {
-                _logger.LogDebug("START");
+                _logger.LogDebug("START UpdateProductCommand");
 
                 var productToEdit = await _productRepository.GetByIdAsync(request.Product.ProductId);
                 if (productToEdit == null)
@@ -96,6 +96,7 @@ namespace PhotoSi.Command.Product
 
 
                 _logger.LogDebug("edit to repository");
+                productToEdit.SetCategory(request.Product.CategoryId);//Qui si potrebbe controllare che la categoria sia valida, anzichè aspettare l'eccezione dal repository
                 productToEdit.UnAssignAllOptions(); //Sarebbe meglio aggiungere quelle non già presenti (e rimuovere quelle no più presenti)
                 _productRepository.Update(productToEdit);
 

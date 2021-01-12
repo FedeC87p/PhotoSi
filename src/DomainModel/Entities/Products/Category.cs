@@ -50,7 +50,7 @@ namespace DomainModel.Entities.Products
             }
 
             validator.ValidatedObject.SetName(categoryDto.Name);
-            validator.ValidatedObject.SetDescription(categoryDto.Name);
+            validator.ValidatedObject.SetDescription(categoryDto.Description);
             validator.ValidatedObject.Note = categoryDto.Note;
 
 

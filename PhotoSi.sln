@@ -3,31 +3,33 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30717.126
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebAPI", "src\WebAPI\WebAPI.csproj", "{E244D203-C065-4136-B9C1-991C5A5F00FE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebAPI", "src\WebAPI\WebAPI.csproj", "{E244D203-C065-4136-B9C1-991C5A5F00FE}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ApplicationCore", "ApplicationCore", "{B204645C-5CDB-4F5C-BD8B-CF2F604EA565}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Domain", "Domain", "{60B15BE4-8F96-4AF5-A167-918A94E20AB6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PhotoSi.Interfaces", "src\Interfaces\PhotoSi.Interfaces.csproj", "{D5CA1CB1-8A29-4D44-B1CB-59C187019B6D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PhotoSi.Interfaces", "src\Interfaces\PhotoSi.Interfaces.csproj", "{D5CA1CB1-8A29-4D44-B1CB-59C187019B6D}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{0EA5AB98-94A6-4AFD-824C-CA82FFDC3814}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastracture.Modules", "src\Infrastracture.Modules\Infrastracture.Modules.csproj", "{42593A94-1549-43B9-B432-9A82BABE4BE1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infrastracture.Modules", "src\Infrastracture.Modules\Infrastracture.Modules.csproj", "{42593A94-1549-43B9-B432-9A82BABE4BE1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DB.EFCore", "src\DB.EFCore\DB.EFCore.csproj", "{29AEBA54-5947-46D5-854F-24347CA9B43C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DB.EFCore", "src\DB.EFCore\DB.EFCore.csproj", "{29AEBA54-5947-46D5-854F-24347CA9B43C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DomainModel", "src\DomainModel\DomainModel.csproj", "{84861735-1D68-44AF-AAE2-D1417083E43E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainModel", "src\DomainModel\DomainModel.csproj", "{84861735-1D68-44AF-AAE2-D1417083E43E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PhotoSi.AC", "src\PhotoSi.AC\PhotoSi.AC.csproj", "{EF721A45-1F88-4876-B32F-5C513E5BDCB1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PhotoSi.AC", "src\PhotoSi.AC\PhotoSi.AC.csproj", "{EF721A45-1F88-4876-B32F-5C513E5BDCB1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PhotoSi.Command", "src\PhotoSi.Command\PhotoSi.Command.csproj", "{F9A56484-D945-45D4-AD5E-CED986404757}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PhotoSi.Command", "src\PhotoSi.Command\PhotoSi.Command.csproj", "{F9A56484-D945-45D4-AD5E-CED986404757}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PhotoSi.Query", "src\PhotoSi.Query\PhotoSi.Query.csproj", "{937B54FD-18F7-4E45-972C-DB77CD2BD1EA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PhotoSi.Query", "src\PhotoSi.Query\PhotoSi.Query.csproj", "{937B54FD-18F7-4E45-972C-DB77CD2BD1EA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PhotoSi.AC.Modules", "src\PhotoSi.AC.Modules\PhotoSi.AC.Modules.csproj", "{32558C82-9E61-4E24-9543-EA35AAA8A12E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PhotoSi.AC.Modules", "src\PhotoSi.AC.Modules\PhotoSi.AC.Modules.csproj", "{32558C82-9E61-4E24-9543-EA35AAA8A12E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpecificationPattern", "src\SpecificationPattern\SpecificationPattern.csproj", "{5570DD34-0468-4887-949E-D4DDAA47C8F0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpecificationPattern", "src\SpecificationPattern\SpecificationPattern.csproj", "{5570DD34-0468-4887-949E-D4DDAA47C8F0}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{3D05A562-A90C-40A2-B087-C54B0988701B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

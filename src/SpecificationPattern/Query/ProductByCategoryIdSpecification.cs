@@ -2,7 +2,7 @@
 using DomainModel.Specifications.Query;
 using System;
 
-namespace SpecificationPattern
+namespace SpecificationPattern.Query
 {
     public class ProductByCategoryIdSpecification : BaseSpecification<Product>
     {

@@ -54,7 +54,7 @@ namespace DomainModel.Entities.Products
             }
 
             validator.ValidatedObject.SetName(optionDto.Name);
-            validator.ValidatedObject.SetDescription(optionDto.Name);
+            validator.ValidatedObject.SetDescription(optionDto.Description);
             validator.ValidatedObject.Note = optionDto.Note;
 
 
