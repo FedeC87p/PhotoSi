@@ -41,12 +41,15 @@ namespace PhotoSi.AC.Modules
             {
                 services.AddScoped<IRuleSpecification<CategoryDto>, CategoryUniqueNameSpecification>();
             }
-            //Product
+            //Option
             if (validationRulesConfig.Option == null || //Default Rule
                     validationRulesConfig.Option.Any(i => i.Equals("UniqueName", StringComparison.InvariantCultureIgnoreCase)))
             {
                 services.AddScoped<IRuleSpecification<OptionDto>, OptionUniqueNameSpecification>();
             }
+
+            //Order
+            services.AddScoped<IRuleSpecification<OrderDto>, OrderAcceptOnlyOneProductForCategorySpecification>();
         }
 
         public static void ConfigureApplicationCore(IServiceCollection services)

@@ -46,7 +46,9 @@ namespace PhotoSi.Command.Orders
             {
                 _logger.LogDebug("START");
 
-                var validator = await DomainModel.Entities.Orders.Order.CreateOrderAsync(request.Order, null);
+                var validator = await DomainModel.Entities.Orders.Order.CreateOrderAsync(request.Order, _rules);
+
+                //TODO qui controlliamo la correttezza dei dati inviati dal client
 
                 if (validator?.ValidatedObject == null || 
                     !validator.IsValid)

@@ -20,12 +20,17 @@ namespace DomainModel.Entities.Orders
 
         protected Order() { }
 
-        public static async Task<IValidator<OrderDto, Order>> CreateOrderAsync(OrderDto orderDto, List<IRuleSpecification<OrderDto>> rules)
+        public static async Task<IValidator<OrderDto, Order>> CreateOrderAsync(OrderDto orderDto, IEnumerable<IRuleSpecification<OrderDto>> rules)
         {
             rules = rules ?? new List<IRuleSpecification<OrderDto>>();
 
             var validator = new Validator<OrderDto, Order>(rules);
             await validator.ExecuteCheckAsync(orderDto, new Order());
+
+            if (!validator.IsValid)
+            {
+                return validator;
+            }
 
             await createOrderItemAsync(orderDto, validator);
 
