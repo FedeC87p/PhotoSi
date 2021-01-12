@@ -20,6 +20,22 @@ namespace WebAPI.ModelViews
 
             CreateMap<OptionCreateRequest, OptionDto>().ReverseMap();
             CreateMap<OptionUpdateRequest, OptionDto>().ReverseMap();
+
+
+            CreateMap<OrderCreateRequest, OrderDto>()
+                .ForMember(dest => dest.ProductItems,
+                    opt => opt.MapFrom((src, dest) =>
+                        src?.ProductItems?.Select(i => new OrderItemDto
+                        {
+                            ProductId = i.ProductId,
+                            Quantity = i.Quantity,
+                            OptionItems = i?.OptionItems?.Select(k => new OrderItemOptionDto
+                            {
+                                OptionId = k.OptionId,
+                                Value = k.Value
+                            })?.ToList()
+                        }
+                        )));
         }
     }
 }

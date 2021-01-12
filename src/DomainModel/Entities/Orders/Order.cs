@@ -40,7 +40,6 @@ namespace DomainModel.Entities.Orders
             validator.ValidatedObject.Total = orderDto.Total; //In teoria dovrei calcolarlo in case ai prodotti figli
             validator.ValidatedObject.Code = orderDto.Code;
 
-
             return validator;
         }
 
