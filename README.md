@@ -15,6 +15,8 @@ In questo modo mi assicuro che ogni oggetto creato sia sempre consistente, quind
 Per la validazione ho utilizzato un Validator Pattern (anche se qua le soluzioni sarebbero state molteplici), io mi sono trovato bene ad utilizzarlo perchè mi permette di inserire logica di validazione sia complessa oppure che richede l'accesso anche al repository, cercando di non portare le dipenze del Repository dentro la mia classe di dominio (che in teoria non dovrebbe avere nessun riferimento).
 Il vantaggio di questo approccio è che mi permette di aggiungere o rimuovere regole di validazione senza rischiare di rompere altri punti del codice e di avere funzioni di validazione ben distinte in modo che ognuna si occupi di un solo compito (ho cercato di seguire i principi della programmazione SOLID)
 
+Ho utilizzato anche gli Specification Pattern (utilizzando l'implementazione di https://gunnarpeipman.com/) con tutti vantaggio/svantaggi che comporta, ma nel mio caso avendo una logia molto semplice di CRUD credo che siano più i vantaggi.
+
 Per quanto riguarda l'accesso al database ho utilizzato EFCore con un database sqlite in modo da poterlo utilizzare senza nessuna installazione aggiuntiva.
 In realtà il database (come altre configurazioni) sono modificabili nel appSetting.json in modo ch le dipendenze vengano caricate direttamente allo startup.
 Sia l'accesso in Lettura che Scrittura è stato fatto utilizzando EFCore, però ho diviso la parte di Command da Query, in modo che in futuro si possa utilizzare Dapper in caso di ottimizzazione di alcune query.
