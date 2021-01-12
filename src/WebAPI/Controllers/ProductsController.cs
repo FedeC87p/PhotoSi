@@ -120,6 +120,11 @@ namespace WebAPI.Controllers
         {
             _logger.LogDebug("START UpdateProduct");
 
+            if (productId != product.ProductId)
+            {
+                return BadRequest($"invalid productid");
+            }
+
             var productDto = _mapper.Map<ProductDto>(product);
             productDto.ProductId = productId;
             var productResult = await CommandAsync(new UpdateProductCommand

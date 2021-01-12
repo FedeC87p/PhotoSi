@@ -119,6 +119,11 @@ namespace WebAPI.Controllers
         {
             _logger.LogDebug("START UpdateOption");
 
+            if (optionId != option.OptionId)
+            {
+                return BadRequest($"invalid optionId");
+            }
+
             var optionDto = _mapper.Map<OptionDto>(option);
             optionDto.OptionId = optionId;
             var productResult = await CommandAsync(new UpdateOptionCommand

@@ -122,6 +122,11 @@ namespace WebAPI.Controllers
         {
             _logger.LogDebug("START UpdateCategory");
 
+            if (categoryId != category.CategoryId)
+            {
+                return BadRequest($"invalid categoryId");
+            }
+
             var categoryDto = _mapper.Map<CategoryDto>(category);
             categoryDto.CategoryId = categoryId;
             var productResult = await CommandAsync(new UpdateCategoryCommand

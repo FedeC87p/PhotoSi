@@ -19,7 +19,7 @@ namespace PhotoSi.Command.Product
     {
         public GetProductByIdQuery()
         {
-            IncludeOptionName = false;
+            IncludeOptionName = true;
         }
 
         public int ProductId { get; set; }
@@ -64,7 +64,7 @@ namespace PhotoSi.Command.Product
                 var categoryDto = _mapper.Map<CategoryDto>(category);
 
                 Dictionary<int, string> optionDto;
-                if (request.IncludeOptionName && 
+                if (request.IncludeOptionName &&
                     product?.Options != null)
                 {
                     optionDto = new Dictionary<int, string>();
@@ -86,7 +86,8 @@ namespace PhotoSi.Command.Product
                     ProductId = productDto.ProductId,
                     Name = productDto.Name,
                     Description = productDto.Description,
-                    Note = productDto.Note
+                    Note = productDto.Note,
+                    Options = optionDto
                 };
             }
 
