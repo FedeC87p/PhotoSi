@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace SpecificationPattern.Rules
 {
-    public class OrderAcceptOnlyOneProductForCategorySpecification : IRuleSpecification<OrderDto>
+    public class OrderAcceptOnlyForProductInSameCategorySpecification : IRuleSpecification<OrderDto>
     {
         //Potrei usare i generic per creare un'unica classe per tutte le entità
         //Però le logiche potrebbero anche essere completamente diverse
@@ -20,7 +20,7 @@ namespace SpecificationPattern.Rules
 
         private readonly IRepository<Product> _product;
 
-        public OrderAcceptOnlyOneProductForCategorySpecification(IRepository<Product> product)
+        public OrderAcceptOnlyForProductInSameCategorySpecification(IRepository<Product> product)
         {
             _product = product;
         }
@@ -43,17 +43,17 @@ namespace SpecificationPattern.Rules
             {
                 CategoryId = group.Key,
                 Count = group.Count()
-            }).Where(i => i.Count > 1);
+            });
 
             if (categories != null &&
-                categories.Any())
+                categories.Count() > 1)
             {
                 result.IsSatisfied = false;
                 result.Errors = categories.Select(i =>
                        new ValidatorError
                        {
                            Code = $"ErrorCode.TooManyProducrForCategory_{i.CategoryId}",
-                           Detail = new ValidatorErrorDetail { JsonData = "", Messages = new List<string> { $"Too Many Product For Same Category {i.CategoryId}" } },
+                           Detail = new ValidatorErrorDetail { JsonData = "", Messages = new List<string> { $"Too Many Product For Different Category {i.CategoryId}" } },
                            Type = ValidatorType.Business,
                            GeneratorClass = GetType().FullName
                        }).ToList();

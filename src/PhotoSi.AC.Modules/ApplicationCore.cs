@@ -49,7 +49,9 @@ namespace PhotoSi.AC.Modules
             }
 
             //Order
-            services.AddScoped<IRuleSpecification<OrderDto>, OrderAcceptOnlyOneProductForCategorySpecification>();
+            //services.AddScoped<IRuleSpecification<OrderDto>, OrderAcceptOnlyOneProductForCategorySpecification>(); //Usata per fare il contrario della regola successiva
+            services.AddScoped<IRuleSpecification<OrderDto>, OrderAcceptOnlyForProductInSameCategorySpecification>();
+            
         }
 
         public static void ConfigureApplicationCore(IServiceCollection services)
