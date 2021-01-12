@@ -89,8 +89,8 @@ namespace WebAPI.BackgroundService
 
             var categoryDto = new CategoryDto
             {
-                Name = "Cat1",
-                Description = "DescCat1",
+                Name = "Abiti Estivi",
+                Description = "Ogni tipo di abito per l'estate",
                 CategoryId = 1
             };
             var catOne = (await Category.CreateCategoryAsync(categoryDto, null)).ValidatedObject;
@@ -99,8 +99,8 @@ namespace WebAPI.BackgroundService
 
             categoryDto = new CategoryDto
             {
-                Name = "Cat2",
-                Description = "DescCat2",
+                Name = "Abiti Invernali",
+                Description = "Ogni tipo di abito invernale",
                 CategoryId = 2
             };
             var catTwo = (await Category.CreateCategoryAsync(categoryDto, null)).ValidatedObject;
@@ -109,8 +109,8 @@ namespace WebAPI.BackgroundService
 
             categoryDto = new CategoryDto
             {
-                Name = "Cat3",
-                Description = "DescCat3",
+                Name = "Scarpe",
+                Description = "Tutte le scarpe",
                 CategoryId = 3
             };
             var catThree = (await Category.CreateCategoryAsync(categoryDto, null)).ValidatedObject;
@@ -120,9 +120,9 @@ namespace WebAPI.BackgroundService
 
             var dto = new ProductDto
             {
-                Name = "Product1",
-                Description = "Desc1",
-                CategoryId = 1
+                Name = "Pantanoni Lana",
+                Description = "Pantaloni di lana economici",
+                CategoryId = 2
             };
             var productOne = (await Product.CreateProductAsync(dto, null)).ValidatedObject;
             repository.Add(productOne);
@@ -130,8 +130,8 @@ namespace WebAPI.BackgroundService
 
             dto = new ProductDto
             {
-                Name = "Product2",
-                Description = "Desc2",
+                Name = "Maglione Lana",
+                Description = "Maglione di lana economici",
                 CategoryId = 2
             };
             var productTwo = (await Product.CreateProductAsync(dto, null)).ValidatedObject;
@@ -140,9 +140,9 @@ namespace WebAPI.BackgroundService
 
             dto = new ProductDto
             {
-                Name = "Product3",
-                Description = "Desc3",
-                CategoryId = 3
+                Name = "Camicia estiva",
+                Description = "Camicia leggera",
+                CategoryId = 1
             };
             var productThree = (await Product.CreateProductAsync(dto, null)).ValidatedObject;
             repository.Add(productThree);
@@ -150,8 +150,8 @@ namespace WebAPI.BackgroundService
 
             dto = new ProductDto
             {
-                Name = "Product4",
-                Description = "Desc4",
+                Name = "Pantaloncini",
+                Description = "Pantaloncini ottimi",
                 CategoryId = 1
             };
             var productFour = (await Product.CreateProductAsync(dto, null)).ValidatedObject;
@@ -160,21 +160,31 @@ namespace WebAPI.BackgroundService
 
             dto = new ProductDto
             {
-                Name = "Product5",
-                Description = "Desc5",
-                CategoryId = 2
+                Name = "Scarpa",
+                Description = "Scarpa per ogni stagione",
+                CategoryId = 3
             };
             var productFive = (await Product.CreateProductAsync(dto, null)).ValidatedObject;
             repository.Add(productFive);
             await repository.SaveChangeAsync(); //Fatto ogni volta per garantirmi l'id crescente
 
-        
+            dto = new ProductDto
+            {
+                Name = "ScarpaSenzaOptioni",
+                Description = "Scarpa usata senza optioni",
+                CategoryId = 3
+            };
+            var productSix = (await Product.CreateProductAsync(dto, null)).ValidatedObject;
+            repository.Add(productSix);
+            await repository.SaveChangeAsync(); //Fatto ogni volta per garantirmi l'id crescente
+
+
 
 
             var optionDto = new OptionDto
             {
-                Name = "Option1",
-                Description = "DescOption1"
+                Name = "Colore",
+                Description = "Colore associato"
             };
             var option1 = (await Option.CreateOptionAsync(optionDto, null)).ValidatedObject;
             optionRepository.Add(option1);
@@ -182,8 +192,8 @@ namespace WebAPI.BackgroundService
 
             optionDto = new OptionDto
             {
-                Name = "Option2",
-                Description = "DescOption2"
+                Name = "Taglia",
+                Description = "Taglia associata"
             };
             var option2 = (await Option.CreateOptionAsync(optionDto, null)).ValidatedObject;
             optionRepository.Add(option2);
@@ -191,8 +201,8 @@ namespace WebAPI.BackgroundService
 
             optionDto = new OptionDto
             {
-                Name = "Option3",
-                Description = "DescOption3"
+                Name = "Ricamo",
+                Description = "Tipologia di ricamo"
             };
             var option3 = (await Option.CreateOptionAsync(optionDto, null)).ValidatedObject;
             optionRepository.Add(option3);
@@ -200,8 +210,8 @@ namespace WebAPI.BackgroundService
 
             optionDto = new OptionDto
             {
-                Name = "Option4",
-                Description = "DescOption4"
+                Name = "Misura",
+                Description = "Misara in cm"
             };
             var option4 = (await Option.CreateOptionAsync(optionDto, null)).ValidatedObject;
             optionRepository.Add(option4);
@@ -209,7 +219,7 @@ namespace WebAPI.BackgroundService
 
             optionDto = new OptionDto
             {
-                Name = "Option5",
+                Name = "OptioneMaiUsata",
                 Description = "DescOption5"
             };
             var option5 = (await Option.CreateOptionAsync(optionDto, null)).ValidatedObject;
@@ -223,18 +233,25 @@ namespace WebAPI.BackgroundService
             //repository.LinkCategory(productFive, catTwo);
             //repository.LinkCategory(productThree, catThree);
 
+
             repository.LinkOption(productOne, option1);
-            repository.LinkOption(productOne, option2); 
-            repository.LinkOption(productOne, option3);
-
             repository.LinkOption(productTwo, option1);
-            repository.LinkOption(productTwo, option2);
-            repository.LinkOption(productTwo, option3);
-
-            repository.LinkOption(productThree, option4);
-
+            repository.LinkOption(productThree, option1);
             repository.LinkOption(productFour, option1);
-            repository.LinkOption(productFour, option5);
+            repository.LinkOption(productFive, option1);
+
+            repository.LinkOption(productOne, option2);
+            repository.LinkOption(productTwo, option2);
+            repository.LinkOption(productThree, option2);
+            repository.LinkOption(productFour, option2);
+
+            repository.LinkOption(productOne, option3);
+            repository.LinkOption(productTwo, option3);
+            repository.LinkOption(productThree, option3);
+            repository.LinkOption(productFour, option3);
+
+            repository.LinkOption(productFive, option4);
+
 
             await optionRepository.SaveChangeAsync();
         }

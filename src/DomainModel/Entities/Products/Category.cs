@@ -16,6 +16,10 @@ namespace DomainModel.Entities.Products
         public string Description { get; private set; }
         public string Note { get; set; } //esempio di dato pubblico senza metodo di set
 
+
+        private readonly List<Product> _products = new List<Product>();
+        public virtual IReadOnlyCollection<Product> Products => _products?.AsReadOnly();
+
         public static async Task<IValidator<CategoryDto, Category>> CreateCategoryAsync(CategoryDto categoryDto, IEnumerable<IRuleSpecification<CategoryDto>> rules)
         {
             var validator = new Validator<CategoryDto, Category>(rules);
@@ -30,7 +34,8 @@ namespace DomainModel.Entities.Products
             }
 
             validator.ValidatedObject.SetName(categoryDto.Name);
-            validator.ValidatedObject.SetDescription(categoryDto.Name);
+            validator.ValidatedObject.SetDescription(categoryDto.Description);
+            validator.ValidatedObject.Note = categoryDto.Note;
 
             return validator;
         }

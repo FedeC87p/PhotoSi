@@ -16,6 +16,7 @@ namespace DomainModel.Entities.Products
         public string Description { get; private set; }
         public string Note { get;  set; } //esempio di dato pubblico senza metodo di set
 
+
         private readonly List<Product> _products = new List<Product>();
         public virtual IReadOnlyCollection<Product> Products => _products?.AsReadOnly();
 
@@ -31,8 +32,10 @@ namespace DomainModel.Entities.Products
             {
                 return validator;
             }
+
             validator.ValidatedObject.SetName(optionDto.Name);
-            validator.ValidatedObject.SetDescription(optionDto.Name);
+            validator.ValidatedObject.SetDescription(optionDto.Description);
+            validator.ValidatedObject.Note = optionDto.Note;
 
             return validator;
         }

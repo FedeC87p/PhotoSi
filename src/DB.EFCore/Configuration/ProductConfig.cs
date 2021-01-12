@@ -14,7 +14,7 @@ namespace DB.EFCore.Configuration
 
             entity.HasKey(p => p.ProductId);
 
-            entity.HasOne(p => p.Category).WithMany().OnDelete(DeleteBehavior.SetNull);
+            entity.HasOne(p => p.Category).WithMany().HasForeignKey(p => p.CategoryId).OnDelete(DeleteBehavior.Restrict);
             entity.HasMany(p => p.Options).WithMany(p => p.Products);
 
             entity.Ignore(b => b.DomainEvents);

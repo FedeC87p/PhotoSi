@@ -15,13 +15,13 @@ namespace WebAPI.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class ProductController : ApiBaseController
+    public class ProductsController : ApiBaseController
     {
-        private readonly ILogger<ProductController> _logger;
+        private readonly ILogger<ProductsController> _logger;
         private readonly IServiceProvider _serviceProvider;
         private readonly IMapper _mapper;
 
-        public ProductController(ILogger<ProductController> logger,
+        public ProductsController(ILogger<ProductsController> logger,
             IMediatorService mediatorService,
             IServiceProvider serviceProvider,
             IMapper mapper)
@@ -100,7 +100,7 @@ namespace WebAPI.Controllers
 
             if (!productResult.HaveError)
             {
-                return Created($"product/{productResult.ProductId.Value}", productResult.ProductId.Value);
+                return Created($"products/{productResult.ProductId.Value}", productResult.ProductId.Value);
             }
             else
             {

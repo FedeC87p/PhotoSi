@@ -17,7 +17,7 @@ namespace PhotoSi.AC.Modules
             List<Assembly> assemblies = new List<Assembly>
             {
                 //typeof(NodeEndPointReferenceChangedPublicEvent).GetTypeInfo().Assembly, //DomainEvent
-                //typeof(NodeByIdQuery).GetTypeInfo().Assembly, //Query
+                typeof(GetAllProductQuery).GetTypeInfo().Assembly, //Query
                 typeof(CreateProductCommand).GetTypeInfo().Assembly, //Command
                 //typeof(NodeEndPointReferenceChangedHandler).GetTypeInfo().Assembly //Subcribers
             };
