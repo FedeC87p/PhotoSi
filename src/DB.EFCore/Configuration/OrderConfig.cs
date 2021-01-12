@@ -16,5 +16,6 @@ namespace DB.EFCore.Configuration
             entity.Ignore(b => b.DomainEvents);
             entity.Ignore(b => b.IntegrationEvents);
         }
+
     }
 }
