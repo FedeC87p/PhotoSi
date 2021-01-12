@@ -50,11 +50,10 @@ namespace DomainModel.Entities.Orders
 
         static private void validateCustomBusinessRulesOrderProducts(OrderDto orderDto, Validator<OrderDto, Order> validator)
         {
-            var validatorError = new List<ValidatorError>();
-
             if (orderDto.ProductItems == null ||
                 orderDto.ProductItems.Count <= 0)
             {
+                var validatorError = new List<ValidatorError>();
                 validatorError.Add(new ValidatorError
                 {
                     Code = "NoProducts",
@@ -62,6 +61,7 @@ namespace DomainModel.Entities.Orders
                     GeneratorClass = "OrderFactory",
                     Type = ValidatorType.Business
                 });
+                validator.AddCustomBrokenRule(validatorError);
             }
         }
 
