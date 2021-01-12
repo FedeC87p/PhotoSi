@@ -5,10 +5,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using PhotoSi.Command.Product;
 using PhotoSi.Interfaces.Mediator;
+using PhotoSi.Query.Product.QueryResult;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using WebAPI.ModelViews.Request;
-using WebAPI.ModelViews.Response;
 
 namespace WebAPI.Controllers
 {
@@ -32,7 +33,7 @@ namespace WebAPI.Controllers
         }
 
         /// <summary>
-        ///     Create new product.
+        ///     Get product.
         /// </summary>
         /// <response code="201">Create node</response>
         /// <response code="400">Bad request.</response>
@@ -42,22 +43,40 @@ namespace WebAPI.Controllers
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ProductModelView))]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> DeleteProduct(int productId)
+        public async Task<IActionResult> GetProduct(int productId)
         {
             _logger.LogDebug("START UpdateProduct");
-            var productResult = await QueryAsync(new DeleteProductQuery
+            var productResult = await QueryAsync(new GetProductByIdQuery
             {
                 ProductId = productId
             });
 
-            if (!productResult.HaveError)
+            if (productResult != null)
             {
-                return NoContent();
+                return Ok(productResult);
             }
             else
             {
-                return UnprocessableEntity(productResult.Errors);
+                return NotFound($"Product id {productId} not found");
             }
+        }
+
+        /// <summary>
+        ///     Get products.
+        /// </summary>
+        /// <response code="201">Create node</response>
+        /// <response code="400">Bad request.</response>
+        /// <response code="500">Error.</response>
+        /// <returns>JsonSdmx</returns>
+        [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<ProductDto>))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> GetProducts()
+        {
+            _logger.LogDebug("START UpdateProduct");
+            var productResult = await QueryAsync(new GetAllProductQuery());
+
+            return Ok(productResult);
         }
 
         /// <summary>
@@ -90,7 +109,7 @@ namespace WebAPI.Controllers
         }
 
         /// <summary>
-        ///     Create new product.
+        ///     Update new product.
         /// </summary>
         /// <response code="201">Create node</response>
         /// <response code="400">Bad request.</response>

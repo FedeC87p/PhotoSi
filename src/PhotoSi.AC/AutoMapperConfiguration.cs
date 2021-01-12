@@ -19,6 +19,10 @@ namespace PhotoSi.AC
                 .ForMember(dest => dest.CategoryId,
                     opt => opt.MapFrom((src, dest) =>
                         src?.CategoryId));
+
+            CreateMap<Category, CategoryDto>();
+
+            CreateMap<Option, OptionDto>();
         }
         
     }

@@ -1,9 +1,11 @@
 ﻿using AutoMapper;
 using DomainModel.Dtos;
+using DomainModel.Entities.Products;
 using DomainModel.Interfaces;
 using MediatR;
 using Microsoft.Extensions.Logging;
 using PhotoSi.Interfaces.Mediator;
+using PhotoSi.Query.Product.QueryResult;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,21 +15,20 @@ using System.Threading.Tasks;
 
 namespace PhotoSi.Command.Product
 {
-    public class GetProductByIdCommand : ICommand<ProductDto>
+    public class GetAllProductQuery : IQuery<List<ProductDto>>
     {
-        public GetProductByIdCommand()
+        public GetAllProductQuery()
         {
         }
 
-        public int ProductId { get; set; }
 
-        public class GetProductByIdHandler : IRequestHandler<GetProductByIdCommand, ProductDto>
+        public class GetAllProductHandler : IRequestHandler<GetAllProductQuery, List<ProductDto>>
         {
-            private readonly ILogger<GetProductByIdHandler> _logger;
+            private readonly ILogger<GetAllProductHandler> _logger;
             private readonly IProductRepository _productRepository;
             private readonly IMapper _mapper;
 
-            public GetProductByIdHandler(ILogger<GetProductByIdHandler> logger,
+            public GetAllProductHandler(ILogger<GetAllProductHandler> logger,
                                         IProductRepository productRepository,
                                         IMapper mapper)
             {
@@ -36,13 +37,16 @@ namespace PhotoSi.Command.Product
                 _mapper = mapper;
             }
 
-            public async Task<ProductDto> Handle(GetProductByIdCommand request, CancellationToken cancellationToken)
+            public async Task<List<ProductDto>> Handle(GetAllProductQuery request, CancellationToken cancellationToken)
             {
+                //Qua era meglio usare Dapper per fare una query ottimizzata per la get
                 _logger.LogDebug("START");
 
-                var product = await _productRepository.GetByIdAsync(request.ProductId);
+                var products = await _productRepository.ListAllAsync();
 
-                return _mapper.Map<ProductDto>(product);
+                var productsDto = products?.Select(i => _mapper.Map<ProductDto>(i)).ToList();
+
+                return productsDto;
             }
 
         }

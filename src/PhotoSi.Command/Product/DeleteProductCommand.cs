@@ -1,4 +1,5 @@
 ﻿using DomainModel.Interfaces;
+using MediatR;
 using Microsoft.Extensions.Logging;
 using PhotoSi.Command.Product.CommandResult;
 using PhotoSi.Interfaces.Mediator;
