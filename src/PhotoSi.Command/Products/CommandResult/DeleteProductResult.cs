@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace PhotoSi.Command.Product.CommandResult
 {
-    public class UpdateProductResult
+    public class DeleteProductResult
     {
-        public int? ProductId { get; set; }
+        public int ProductId { get; set; }
         public bool HaveError { get; set; }
         public List<string> Errors { get; set; }
     }

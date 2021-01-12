@@ -36,6 +36,27 @@ namespace DomainModel.Entities.Products
             return validator;
         }
 
+        public async Task<IValidator<CategoryDto, Category>> EditAsync(CategoryDto categoryDto, IEnumerable<IRuleSpecification<CategoryDto>> rules)
+        {
+            var validator = new Validator<CategoryDto, Category>(rules);
+            await validator.ExecuteCheckAsync(categoryDto, this);
+
+            //Qui potrebbero essere inserite delle rules a livello di codice da richiamare sempre  
+            //(oppure prima del controllo delle rules dinamiche)
+
+            if (!validator.IsValid)
+            {
+                return validator;
+            }
+
+            validator.ValidatedObject.SetName(categoryDto.Name);
+            validator.ValidatedObject.SetDescription(categoryDto.Name);
+            validator.ValidatedObject.Note = categoryDto.Note;
+
+
+            return validator;
+        }
+
         private void SetName(string name)
         {
             //Il name si può settare solo privatamente in modo da validarlo con regole dinamiche 
