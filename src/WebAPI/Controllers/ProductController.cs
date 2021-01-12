@@ -4,13 +4,11 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using PhotoSi.Command.Product;
-using PhotoSi.Interfaces;
 using PhotoSi.Interfaces.Mediator;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using WebAPI.ModelViews.Request;
+using WebAPI.ModelViews.Response;
 
 namespace WebAPI.Controllers
 {
@@ -34,7 +32,36 @@ namespace WebAPI.Controllers
         }
 
         /// <summary>
-        ///     Create new node.
+        ///     Create new product.
+        /// </summary>
+        /// <response code="201">Create node</response>
+        /// <response code="400">Bad request.</response>
+        /// <response code="500">Error.</response>
+        /// <returns>JsonSdmx</returns>
+        [HttpGet("{productId}")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ProductModelView))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> DeleteProduct(int productId)
+        {
+            _logger.LogDebug("START UpdateProduct");
+            var productResult = await QueryAsync(new DeleteProductQuery
+            {
+                ProductId = productId
+            });
+
+            if (!productResult.HaveError)
+            {
+                return NoContent();
+            }
+            else
+            {
+                return UnprocessableEntity(productResult.Errors);
+            }
+        }
+
+        /// <summary>
+        ///     Create new product.
         /// </summary>
         /// <response code="201">Create node</response>
         /// <response code="400">Bad request.</response>
@@ -54,7 +81,68 @@ namespace WebAPI.Controllers
 
             if (!productResult.HaveError)
             {
-                return Created($"productId", productResult.ProductId.Value);
+                return Created($"product/{productResult.ProductId.Value}", productResult.ProductId.Value);
+            }
+            else
+            {
+                return UnprocessableEntity(productResult.Errors);
+            }
+        }
+
+        /// <summary>
+        ///     Create new product.
+        /// </summary>
+        /// <response code="201">Create node</response>
+        /// <response code="400">Bad request.</response>
+        /// <response code="500">Error.</response>
+        /// <returns>JsonSdmx</returns>
+        [HttpPut("{productId}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> UpdateProduct([FromBody] ProductUpdateRequest product, int productId)
+        {
+            _logger.LogDebug("START UpdateProduct");
+
+            var productDto = _mapper.Map<ProductDto>(product);
+            productDto.ProductId = productId;
+            var productResult = await CommandAsync(new UpdateProductCommand
+            {
+                Product = productDto
+            });
+
+            if (!productResult.HaveError)
+            {
+                return NoContent();
+            }
+            else
+            {
+                return UnprocessableEntity(productResult.Errors);
+            }
+        }
+
+        /// <summary>
+        ///     Create new product.
+        /// </summary>
+        /// <response code="201">Create node</response>
+        /// <response code="400">Bad request.</response>
+        /// <response code="500">Error.</response>
+        /// <returns>JsonSdmx</returns>
+        [HttpDelete("{productId}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> DeleteProduct(int productId)
+        {
+            _logger.LogDebug("START UpdateProduct");
+            var productResult = await CommandAsync(new DeleteProductCommand
+            {
+                ProductId = productId
+            });
+
+            if (!productResult.HaveError)
+            {
+                return NoContent();
             }
             else
             {

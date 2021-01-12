@@ -3,14 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace WebAPI.ModelViews.Response
+namespace WebAPI.ModelViews.Request
 {
-    public class ProductModelView
+    public class ProductUpdateRequest
     {
-        public int ProductId { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
         public int CategoryId { get; set; }
-        public List<int> Options { get; set; }
+        public List<int> OptionsId { get; set; }
     }
 }

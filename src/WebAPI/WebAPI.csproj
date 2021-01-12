@@ -31,6 +31,7 @@
 
   <ItemGroup>
     <Folder Include="DB\" />
+    <Folder Include="ModelViews\Response\" />
   </ItemGroup>
 
 </Project>

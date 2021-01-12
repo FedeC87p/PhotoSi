@@ -168,15 +168,6 @@ namespace WebAPI.BackgroundService
             repository.Add(productFive);
             await repository.SaveChangeAsync(); //Fatto ogni volta per garantirmi l'id crescente
 
-            dto = new ProductDto
-            {
-                Name = "Product6",
-                Description = "Desc6",
-                CategoryId = null
-            };
-            var productSix = (await Product.CreateProductAsync(dto, null)).ValidatedObject;
-            repository.Add(productSix);
-            await repository.SaveChangeAsync(); //Fatto ogni volta per garantirmi l'id crescente
         
 
 

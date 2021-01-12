@@ -14,7 +14,7 @@ namespace DomainModel.Entities.Products
         public string Name { get; protected set; }
         public string Description { get; protected set; }
         public string Note { get; set; } //esempio di dato pubblico senza metodo di set
-        public int? CategoryId { get; protected set; }
+        public int CategoryId { get; protected set; }
 
 
         public virtual Category Category { get; protected set; }
@@ -35,10 +35,7 @@ namespace DomainModel.Entities.Products
             validator.ValidatedObject.SetDescription(productDto.Description);
             validator.ValidatedObject.Note = productDto.Note;
 
-            if (productDto.CategoryId != null)
-            {
-                validator.ValidatedObject.SetCategory(productDto.CategoryId.Value);
-            }
+            validator.ValidatedObject.SetCategory(productDto.CategoryId);
 
             return validator;
         }
@@ -76,17 +73,16 @@ namespace DomainModel.Entities.Products
 
         public void SetCategory(Category category)
         {
-            CategoryId = category?.CategoryId ?? null;
+            if (category == null)
+            {
+                return;
+            }
+            CategoryId = category.CategoryId;
         }
 
         public void SetCategory(int categoryId)
         {
             CategoryId = categoryId;
-        }
-
-        public void RemoveCategory()
-        {
-            CategoryId = null;
         }
 
         public void AssignOption(Option option)
@@ -111,5 +107,9 @@ namespace DomainModel.Entities.Products
             _options.RemoveAll(i => i.OptionId == option.OptionId);
         }
 
+        public void UnAssignAllOptions()
+        {
+            _options.Clear();
+        }
     }
 }

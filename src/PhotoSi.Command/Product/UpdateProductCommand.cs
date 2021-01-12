@@ -14,22 +14,22 @@ using System.Threading.Tasks;
 
 namespace PhotoSi.Command.Product
 {
-    public class CreateProductCommand : ICommand<CreateProductResult>
+    public class UpdateProductCommand : ICommand<UpdateProductResult>
     {
-        public CreateProductCommand()
+        public UpdateProductCommand()
         {
         }
 
         public ProductDto Product { get; set; }
 
-        public class CreateProductHandler : IRequestHandler<CreateProductCommand, CreateProductResult>
+        public class UpdateProductHandler : IRequestHandler<UpdateProductCommand, UpdateProductResult>
         {
-            private readonly ILogger<CreateProductHandler> _logger;
+            private readonly ILogger<UpdateProductHandler> _logger;
             private readonly IEnumerable<IRuleSpecification<ProductDto>> _rules;
             private readonly IProductRepository _productRepository;
             private readonly IRepository<Option> _optionRepository;
 
-            public CreateProductHandler(ILogger<CreateProductHandler> logger,
+            public UpdateProductHandler(ILogger<UpdateProductHandler> logger,
                                         IProductRepository productRepository,
                                         IRepository<Option> optionRepository,
                                         IEnumerable<IRuleSpecification<ProductDto>> rules)
@@ -40,21 +40,32 @@ namespace PhotoSi.Command.Product
                 _rules = rules;
             }
 
-            public async Task<CreateProductResult> Handle(CreateProductCommand request, CancellationToken cancellationToken)
+            public async Task<UpdateProductResult> Handle(UpdateProductCommand request, CancellationToken cancellationToken)
             {
                 _logger.LogDebug("START");
 
-                var validator = await DomainModel.Entities.Products.Product.CreateProductAsync(request.Product, _rules);
+                var productToEdit = await _productRepository.GetByIdAsync(request.Product.ProductId);
+                if (productToEdit == null)
+                {
+                    return new UpdateProductResult
+                    {
+                        Errors = new List<string> { $"Product id {request.Product.ProductId} not found" },
+                        HaveError = true
+                    };
+                }
+
+                var validator = await productToEdit.EditAsync(request.Product, _rules);
 
                 if (validator?.ValidatedObject == null || 
                     !validator.IsValid)
                 {
-                    return new CreateProductResult
+                    return new UpdateProductResult
                     {
                         Errors = validator.BrokenRules.SelectMany(i => i.Errors.Select(k => k.Code)).ToList(),
                         HaveError = true
                     };
                 }
+                productToEdit = validator.ValidatedObject;
 
                 var optionsEntity = new List<Option>();
                 var optionsErrors = new List<string>();
@@ -76,7 +87,7 @@ namespace PhotoSi.Command.Product
 
                 if (optionsErrors.Any())
                 {
-                    return new CreateProductResult
+                    return new UpdateProductResult
                     {
                         Errors = optionsErrors,
                         HaveError = true
@@ -84,9 +95,11 @@ namespace PhotoSi.Command.Product
                 }
 
 
-                _logger.LogDebug("add to repository");
-                _productRepository.Add(validator.ValidatedObject);
+                _logger.LogDebug("edit to repository");
+                productToEdit.UnAssignAllOptions(); //Sarebbe meglio aggiungere quelle non già presenti (e rimuovere quelle no più presenti)
+                _productRepository.Update(productToEdit);
 
+                
                 foreach (var option in optionsEntity)
                 {
                     _productRepository.LinkOption(validator.ValidatedObject, option);
@@ -95,7 +108,7 @@ namespace PhotoSi.Command.Product
                 _logger.LogDebug("SaveChangeAsync");
                 await _productRepository.SaveChangeAsync();
 
-                return new CreateProductResult
+                return new UpdateProductResult
                 {
                     ProductId = validator.ValidatedObject.ProductId,
                     HaveError = false
