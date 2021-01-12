@@ -23,7 +23,14 @@ Nel Command gestisco tutto l'accesso al repository ed il salvataggio dei dati, a
 
 Il database si crea e si popola in automatico all'avvio. Ad ogni avviso se non sono presenti prodotti vengono creati 6 prodotti di default, se non ci sono ordini ne viene creato uno di default.
 
-Il nome del database è confgiurabile da appSetting.json, ed anche il fatto che venga creato oppure no il database è un booleano 
+Il nome del database è configurabile da appSetting.json, ed anche il fatto che venga creato oppure no il database è un booleano in "Databae:UseMigrationScript"
+
+Per quanto riguarda i test ho inserito alcuni esempio che mostrano la creazione di un Entity a partire da un Dto, sia con che senza regole di validazione (qui magari possiamo approfindire a voce, perchè in effetti le regole di validazione credo che debbano stare in un Unity distinto).
+Inoltre è presente un Unit Test che mostra le differenti risposte del controller a seconda che sia trovato o meno il dato richiesto.
+
+Ho modellato l'applicazione che in modo che una volta effettuato l'ordine (quindi dopo la commit) sia generato un event intercettato da un subscriber che avrà il compito di  chiamare altri servizi (in questo caso un'interfaccia per inviare le mail)
+
+Un ordine ha una relazione con N prodotti, che a loro volta potranno avere N opzioni con un valore string. Se due prodotti diversi avranno la solita opzione, saranno comunque salvate due entità diverse (ognuna legata al prodotto). 
 
 
 
