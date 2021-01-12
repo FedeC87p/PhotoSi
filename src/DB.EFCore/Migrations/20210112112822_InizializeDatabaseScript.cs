@@ -123,15 +123,16 @@ namespace DB.EFCore.Migrations
                 name: "OrderItemOptions",
                 columns: table => new
                 {
-                    OrderItemOptionId = table.Column<int>(type: "INTEGER", nullable: false),
-                    OrderItemId = table.Column<int>(type: "INTEGER", nullable: false),
+                    OrderItemOptionId = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
                     Name = table.Column<string>(type: "TEXT", nullable: true),
                     Value = table.Column<string>(type: "TEXT", nullable: true),
-                    OptionId = table.Column<int>(type: "INTEGER", nullable: false)
+                    OptionId = table.Column<int>(type: "INTEGER", nullable: false),
+                    OrderItemId = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_OrderItemOptions", x => new { x.OrderItemOptionId, x.OrderItemId });
+                    table.PrimaryKey("PK_OrderItemOptions", x => x.OrderItemOptionId);
                     table.ForeignKey(
                         name: "FK_OrderItemOptions_OrderItems_OrderItemId",
                         column: x => x.OrderItemId,

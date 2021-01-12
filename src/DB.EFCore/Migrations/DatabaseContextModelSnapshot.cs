@@ -63,9 +63,7 @@ namespace DB.EFCore.Migrations
             modelBuilder.Entity("DomainModel.Entities.Orders.OrderItemOption", b =>
                 {
                     b.Property<int>("OrderItemOptionId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("OrderItemId")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Name")
@@ -74,10 +72,13 @@ namespace DB.EFCore.Migrations
                     b.Property<int>("OptionId")
                         .HasColumnType("INTEGER");
 
+                    b.Property<int>("OrderItemId")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Value")
                         .HasColumnType("TEXT");
 
-                    b.HasKey("OrderItemOptionId", "OrderItemId");
+                    b.HasKey("OrderItemOptionId");
 
                     b.HasIndex("OrderItemId");
 
