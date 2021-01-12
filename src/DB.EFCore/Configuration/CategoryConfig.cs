@@ -13,8 +13,6 @@ namespace DB.EFCore.Configuration
 
             entity.HasKey(p => p.CategoryId);
 
-            entity.HasMany(p => p.Products).WithOne().HasForeignKey(p => p.CategoryId);
-
             entity.Ignore(b => b.DomainEvents);
             entity.Ignore(b => b.IntegrationEvents);
         }
