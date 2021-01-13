@@ -20,7 +20,10 @@ namespace DomainModel.Entities.Orders
 
         protected Order() { }
 
-        public static async Task<IValidator<OrderDto, Order>> CreateOrderAsync(OrderDto orderDto, IEnumerable<IRuleSpecification<OrderDto>> rules)
+        public static async Task<IValidator<OrderDto, Order>> CreateOrderAsync(OrderDto orderDto, 
+                                                                                IEnumerable<IRuleSpecification<OrderDto>> rules, 
+                                                                                IEnumerable<IRuleSpecification<OrderItemDto>> orderItemRules,
+                                                                                IEnumerable<IRuleSpecification<OrderItemOptionDto>> optionItemRules)
         {
             rules = rules ?? new List<IRuleSpecification<OrderDto>>();
 
@@ -32,7 +35,7 @@ namespace DomainModel.Entities.Orders
                 return validator;
             }
 
-            await createOrderItemAsync(orderDto, validator);
+            await createOrderItemAsync(orderDto, validator, orderItemRules, optionItemRules);
 
             validateCustomBusinessRulesOrderProducts(orderDto, validator);
 
@@ -65,9 +68,10 @@ namespace DomainModel.Entities.Orders
             }
         }
 
-        static private async Task createOrderItemAsync(OrderDto orderDto, Validator<OrderDto, Order> orderValidator)
+        static private async Task createOrderItemAsync(OrderDto orderDto, Validator<OrderDto, Order> orderValidator,
+                                                        IEnumerable<IRuleSpecification<OrderItemDto>> orderItemRules,
+                                                        IEnumerable<IRuleSpecification<OrderItemOptionDto>> optionItemRules)
         {
-            List<string> errors = null;
             if (orderDto.ProductItems == null)
             {
                 return;
@@ -75,28 +79,16 @@ namespace DomainModel.Entities.Orders
 
             foreach (var item in orderDto.ProductItems)
             {
-                var validatorSingleItem = await OrderItem.CreateOrderItemAsync(item);
+                var validatorSingleItem = await OrderItem.CreateOrderItemAsync(item, orderItemRules, optionItemRules);
 
                 if (!validatorSingleItem.IsValid)
                 {
-                    errors = validatorSingleItem.BrokenRules.SelectMany(i => i.Errors.Select(k => k.Code)).ToList();
+                    validatorSingleItem.BrokenRules?.ForEach(i => orderValidator.AddCustomBrokenRule(i));
                 }
                 else
                 {
                     orderValidator.ValidatedObject._orderItems.Add(validatorSingleItem.ValidatedObject);
                 }  
-            }
-            if (errors != null &&
-                errors.Count > 0)
-            {
-                orderValidator.AddCustomBrokenRule(errors.Select(i => new ValidatorError
-                {
-                    Code = "InvalidProductItem",
-                    Detail = new ValidatorErrorDetail { Messages = new List<string> { i } },
-                    GeneratorClass = "OrderFactory",
-                    Type = ValidatorType.DomainEntity
-                }).ToList()
-                );
             }
         }
 

@@ -27,26 +27,32 @@ namespace PhotoSi.Command.Orders
         public class CreateProductHandler : IRequestHandler<CreateOrderCommand, CreateOrderResult>
         {
             private readonly ILogger<CreateProductHandler> _logger;
-            private readonly IEnumerable<IRuleSpecification<OrderDto>> _rules;
+            private readonly IEnumerable<IRuleSpecification<OrderDto>> _rulesOrder;
+            private readonly IEnumerable<IRuleSpecification<OrderItemDto>> _rulesOrderItem;
+            private readonly IEnumerable<IRuleSpecification<OrderItemOptionDto>> _rulesOrderOptionItem;
             private readonly IProductRepository _productRepository;
             private readonly IRepository<Order> _orderRepository;
 
             public CreateProductHandler(ILogger<CreateProductHandler> logger,
                                         IProductRepository productRepository,
                                         IRepository<Order> orderRepository,
-                                        IEnumerable<IRuleSpecification<OrderDto>> rules)
+                                        IEnumerable<IRuleSpecification<OrderDto>> rulesOrder,
+                                        IEnumerable<IRuleSpecification<OrderItemDto>> rulesOrderItem,
+                                        IEnumerable<IRuleSpecification<OrderItemOptionDto>> rulesOrderOptionItem)
             {
                 _logger = logger;
                 _productRepository = productRepository;
                 _orderRepository = orderRepository;
-                _rules = rules;
+                _rulesOrder = rulesOrder;
+                _rulesOrderItem = rulesOrderItem;
+                _rulesOrderOptionItem = rulesOrderOptionItem;
             }
 
             public async Task<CreateOrderResult> Handle(CreateOrderCommand request, CancellationToken cancellationToken)
             {
                 _logger.LogDebug("START");
 
-                var validator = await DomainModel.Entities.Orders.Order.CreateOrderAsync(request.Order, _rules);
+                var validator = await DomainModel.Entities.Orders.Order.CreateOrderAsync(request.Order, _rulesOrder, _rulesOrderItem, _rulesOrderOptionItem);
 
                 //TODO qui controlliamo la correttezza dei dati inviati dal client
 

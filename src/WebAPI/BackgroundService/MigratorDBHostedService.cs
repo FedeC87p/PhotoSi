@@ -294,7 +294,7 @@ namespace WebAPI.BackgroundService
               }
             };
 
-            var order = (await Order.CreateOrderAsync(orderDto, null)).ValidatedObject;
+            var order = (await Order.CreateOrderAsync(orderDto, null, null, null)).ValidatedObject;
             orderRepository.Add(order);
             await orderRepository.SaveChangeAsync(); //Fatto ogni volta per garantirmi l'id crescente
         }

@@ -51,7 +51,8 @@ namespace PhotoSi.AC.Modules
             //Order
             //services.AddScoped<IRuleSpecification<OrderDto>, OrderAcceptOnlyOneProductForCategorySpecification>(); //Usata per fare il contrario della regola successiva
             services.AddScoped<IRuleSpecification<OrderDto>, OrderAcceptOnlyForProductInSameCategorySpecification>();
-            
+            //Argomento di approfondimento, ProductAssociatedOnlyWithLinkedOption conviene utilizzare questa logica o spostarla nel Command?
+            services.AddScoped<IRuleSpecification<OrderItemDto>, OrderItemAssociatedOnlyWithLinkedOptionItemSpecification>(); 
         }
 
         public static void ConfigureApplicationCore(IServiceCollection services)

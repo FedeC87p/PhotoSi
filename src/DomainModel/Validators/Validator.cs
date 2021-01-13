@@ -72,7 +72,21 @@ namespace DomainModel.Validators
 
         public void AddCustomBrokenRule(List<ValidatorError> validatorErrors)
         {
-            _ruleResults.Add(new ValidatorResult { IsSatisfied = false, Errors = validatorErrors });
+            if (!_executeRun)
+            {
+                throw new Exception("ExecuteCheckAsync() before to call AddCustomBrokenRule()");
+            }
+            AddCustomBrokenRule(new ValidatorResult { IsSatisfied = false, Errors = validatorErrors });
+        }
+
+        public void AddCustomBrokenRule(ValidatorResult validatorResult)
+        {
+            if (!_executeRun)
+            {
+                throw new Exception("ExecuteCheckAsync() before to call AddCustomBrokenRule()");
+            }
+
+            _ruleResults.Add(validatorResult);
         }
 
         public TResult ValidatedObject => IsValid ? _validateObject : default(TResult);

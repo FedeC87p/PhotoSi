@@ -79,7 +79,7 @@ namespace DomainModel.Entities.Products
         }
 
         public void AssignOption(Option option)
-        { //Qua stiamo puntando un IAggregateRoot all'intenro di un'altro, forse meglio portare questa funzione in un Services che si occupasse di questo 
+        { //Qua stiamo puntando un IAggregateRoot all'interno di un'altro, forse meglio portare questa funzione in un Services che si occupasse di questo 
             if (option == null)
             {
                 return;

@@ -53,7 +53,7 @@ namespace PhotoSi.UnitTest.Entity
               }
             };
 
-            var orderValidator = await DomainModel.Entities.Orders.Order.CreateOrderAsync(orderDto, rules);
+            var orderValidator = await DomainModel.Entities.Orders.Order.CreateOrderAsync(orderDto, rules, null, null);
             
             Assert.True(orderValidator.IsValid);
             Assert.NotNull(orderValidator.ValidatedObject);
@@ -100,7 +100,7 @@ namespace PhotoSi.UnitTest.Entity
               }
             };
 
-            var orderValidator = await DomainModel.Entities.Orders.Order.CreateOrderAsync(orderDto, rules);
+            var orderValidator = await DomainModel.Entities.Orders.Order.CreateOrderAsync(orderDto, rules, null, null);
             Assert.False(orderValidator.IsValid);
             Assert.Null(orderValidator.ValidatedObject);
         }
@@ -113,7 +113,7 @@ namespace PhotoSi.UnitTest.Entity
                 Code = "12345"
             };
 
-            var orderValidator = await DomainModel.Entities.Orders.Order.CreateOrderAsync(orderDto, null);
+            var orderValidator = await DomainModel.Entities.Orders.Order.CreateOrderAsync(orderDto, null, null, null);
             Assert.False(orderValidator.IsValid);
             Assert.Null(orderValidator.ValidatedObject);
         }

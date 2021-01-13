@@ -52,7 +52,7 @@ namespace SpecificationPattern.Rules
                 result.Errors = categories.Select(i =>
                        new ValidatorError
                        {
-                           Code = $"ErrorCode.TooManyProducrForCategory_{i.CategoryId}",
+                           Code = $"{ErrorCode.TooManyProducrForCategory}_{i.CategoryId}",
                            Detail = new ValidatorErrorDetail { JsonData = "", Messages = new List<string> { $"Too Many Product For Different Category {i.CategoryId}" } },
                            Type = ValidatorType.Business,
                            GeneratorClass = GetType().FullName

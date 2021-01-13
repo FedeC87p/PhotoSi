@@ -1,5 +1,7 @@
 ﻿using DomainModel.Dtos;
+using DomainModel.Specifications.Rules;
 using DomainModel.Validators;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace DomainModel.Entities.Orders
@@ -14,9 +16,11 @@ namespace DomainModel.Entities.Orders
         public int OrderItemId { get; protected set; }
         public virtual OrderItem OrderItem { get; protected set; }
 
-        public static async Task<IValidator<OrderItemOptionDto, OrderItemOption>> CreateOptionItemAsync(OrderItemOptionDto orderItemOptionDto)
+        public static async Task<IValidator<OrderItemOptionDto, OrderItemOption>> CreateOptionItemAsync(OrderItemOptionDto orderItemOptionDto,
+                                                                                                        IEnumerable<IRuleSpecification<OrderItemOptionDto>> rules)
         {
-            var validator = new Validator<OrderItemOptionDto, OrderItemOption>(null);
+            rules = rules ?? new List<IRuleSpecification<OrderItemOptionDto>>();
+            var validator = new Validator<OrderItemOptionDto, OrderItemOption>(rules);
             await validator.ExecuteCheckAsync(orderItemOptionDto, new OrderItemOption());
 
             if (!validator.IsValid)

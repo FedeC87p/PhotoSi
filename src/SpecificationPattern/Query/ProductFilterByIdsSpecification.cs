@@ -10,9 +10,13 @@ namespace SpecificationPattern.Query
 {
     public class ProductFilterByIdsSpecification : BaseSpecification<Product>
     {
-        public ProductFilterByIdsSpecification(List<int> productIds)
+        public ProductFilterByIdsSpecification(List<int> productIds, bool includeOptions = false)
             : base(b => productIds == null || productIds.Any(k => k == b.ProductId))
         {
+            if (includeOptions)
+            {
+                AddInclude("Options");
+            }
         }
     }
 }
