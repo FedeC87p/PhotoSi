@@ -7,8 +7,9 @@
     <DockerfileContext>..\..</DockerfileContext>
   </PropertyGroup>
 
+
   <ItemGroup>
-    <None Remove="DB\Database.sqlite-wal" />
+    <Content Include="DB\todo" />
   </ItemGroup>
 
   <ItemGroup>
@@ -35,7 +36,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="DB\" />
     <Folder Include="ModelViews\Response\" />
   </ItemGroup>
 
