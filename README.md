@@ -77,3 +77,102 @@ Per altri n Prodotti Scarpe ho inserito Colore e Dimensione.
     ]
 }
 ```
+* 6: Creare Valid Order: POST http://localhost:5000/Orders
+	Body Message
+```javascript
+{
+    "code": "ProvaOrdine",
+    "productItems": [
+        {
+            "productId": 1,
+            "quantity": 1,
+            "optionItems": [
+                {
+                    "optionId": 1,
+                    "value": "Blu"
+                }
+            ]
+        },
+        {
+            "productId": 2,
+            "quantity": 10,
+            "optionItems": [
+                {
+                    "optionId": 1,
+                    "value": "Celeste"
+                },
+                {
+                    "optionId": 2,
+                    "value": "XL"
+                }
+            ]
+        }
+    ]
+}
+```
+* 7: Creare InvalidValid Category Order: POST http://localhost:5000/Orders
+	Body Message
+```javascript
+{
+    "code": "ProvaOrdine",
+    "productItems": [
+        {
+            "productId": 1,
+            "quantity": 1,
+            "optionItems": [
+                {
+                    "optionId": 1,
+                    "value": "Blu"
+                }
+            ]
+        },
+        {
+            "productId": 3,
+            "quantity": 10,
+            "optionItems": [
+                {
+                    "optionId": 1,
+                    "value": "Celeste"
+                },
+                {
+                    "optionId": 2,
+                    "value": "XL"
+                }
+            ]
+        }
+    ]
+}
+```
+* 8: Creare InvalidValid Option For Product Order: POST http://localhost:5000/Orders
+	Body Message
+```javascript
+{
+    "code": "ProvaOrdine",
+    "productItems": [
+        {
+            "productId": 1,
+            "quantity": 1,
+            "optionItems": [
+                {
+                    "optionId": 1,
+                    "value": "Blu"
+                }
+            ]
+        },
+        {
+            "productId": 2,
+            "quantity": 10,
+            "optionItems": [
+                {
+                    "optionId": 1,
+                    "value": "Celeste"
+                },
+                {
+                    "optionId": 4,
+                    "value": "XL"
+                }
+            ]
+        }
+    ]
+}
+```
