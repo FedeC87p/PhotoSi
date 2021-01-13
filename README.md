@@ -1,5 +1,6 @@
 # PhotoSi
 
+![.NET](https://github.com/FedeC87p/PhotoSi/workflows/.NET/badge.svg)
 
 ## Project Documentation
 
