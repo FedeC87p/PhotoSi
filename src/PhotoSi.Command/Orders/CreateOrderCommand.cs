@@ -55,6 +55,8 @@ namespace PhotoSi.Command.Orders
                 var validator = await DomainModel.Entities.Orders.Order.CreateOrderAsync(request.Order, _rulesOrder, _rulesOrderItem, _rulesOrderOptionItem);
 
                 //TODO qui controlliamo la correttezza dei dati inviati dal client
+                //Ad esempio al momento è possibile inserire un ordine per un ProductId che non esiste
+                //Mentre controllo che un Product in ordine sia effettivamente associato ad un OptionId linkata
 
                 if (validator?.ValidatedObject == null || 
                     !validator.IsValid)
