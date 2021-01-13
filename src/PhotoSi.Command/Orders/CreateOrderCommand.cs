@@ -57,6 +57,7 @@ namespace PhotoSi.Command.Orders
                 //TODO qui controlliamo la correttezza dei dati inviati dal client
                 //Ad esempio al momento è possibile inserire un ordine per un ProductId che non esiste
                 //Mentre controllo che un Product in ordine sia effettivamente associato ad un OptionId linkata
+                //Qua andrebbero anche popolati i nomi dei prodotti ed opzioni 
 
                 if (validator?.ValidatedObject == null || 
                     !validator.IsValid)
