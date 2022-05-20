@@ -4,39 +4,33 @@
 
 ## Project Documentation
 
-Per il progetto ho scelto di seguire l'architetture di cui vi avevo parlato nella precedente call, in modo da poter dare una dimostrazione delle cose dette.
+For the project I chose to follow the architecture I told you about in the previous call, in order to be able to give a demonstration of the things said.
 
-Ho quindi utilizzato una Clean Architecture, in modo da divedere la varie parti del progetto in Domain, Application Core ed Infrastracture.
+I therefore used a Clean Architecture, in order to divide the various parts of the project into Domain, Application Core and Infrastracture.
 
-Nel domain ho modellato tutte le entità (Product, Category Option, Order con i relativi figli).
+In the domain I modeled all the entities (Product, Category Option, Order with their children).
 
-Ho cercato di seguire anche un approccio DDD, tramite una factory che riceve in ingresso un Dto e delle regole di validazione (che sono ingnettate come dipendenza in fase di configurazione) e creo tutte le Entity del dominio.
-In questo modo mi assicuro che ogni oggetto creato sia sempre consistente, quindi ho cercato di trattare i Dto come oggetti Mutable mentre le classi Entity sono "Immutable" anche se hanno delle funzioni public che ci consentono di modificare comunque alcune proprietà.
+I also tried to follow a DDD approach, through a factory that receives a Dto and validation rules (which are identified as a dependency in the configuration phase) and I create all the Entities of the domain. In this way I make sure that every object created is always consistent, so I tried to treat the Dto as Mutable objects while the Entity classes are "Immutable" even if they have some public functions that allow us to modify some properties anyway.
 
-Per la validazione ho utilizzato un Validator Pattern (anche se qua le soluzioni sarebbero state molteplici), io mi sono trovato bene ad utilizzarlo perchè mi permette di inserire logica di validazione sia complessa oppure che richede l'accesso al repository, cercando di non portare le dipenze del Repository dentro la mia classe di dominio (che in teoria non dovrebbe avere nessun riferimento).
-Il vantaggio di questo approccio è che mi permette di aggiungere o rimuovere regole di validazione senza rischiare di rompere altri punti del codice e di avere funzioni di validazione ben distinte in modo che ognuna si occupi di un solo compito (ho cercato di seguire i principi della programmazione SOLID)
+For the validation I used a Validator Pattern (even if here the solutions would have been many), I was happy to use it because it allows me to insert validation logic that is complex or that requires access to the repository, trying not to bring the Repository dependencies inside my domain class (which in theory shouldn't have any references). The advantage of this approach is that it allows me to add or remove validation rules without the risk of breaking other points in the code and to have very distinct validation functions so that each one deals with only one task (I tried to follow the principles of SOLID programming)
 
-Ho utilizzato anche gli Specification Pattern (utilizzando l'implementazione di https://gunnarpeipman.com/) con tutti vantaggio/svantaggi che comporta, ma nel mio caso avendo una logia molto semplice di CRUD credo che siano più i vantaggi.
+I also used the Specification Patterns (using the implementation of https://gunnarpeipman.com/) with all the advantages / disadvantages that it entails, but in my case having a very simple logic of CRUD I think there are more advantages.
 
-Per quanto riguarda l'accesso al database ho utilizzato EFCore con un database sqlite in modo da poterlo utilizzare senza nessuna installazione aggiuntiva.
-In realtà il database (come altre configurazioni) sono modificabili nel appSetting.json in modo ch le dipendenze vengano caricate direttamente allo startup.
-Sia l'accesso in Lettura che Scrittura è stato fatto utilizzando EFCore, però ho diviso la parte di Command da Query, in modo che in futuro si possa utilizzare Dapper in caso di ottimizzazione di alcune query.
+As for database access I used EFCore with a sqlite database so that I can use it without any additional installation. Actually the database (like other configurations) are editable in the appSetting.json so that the dependencies are loaded directly to the startup. Both Read and Write access was done using EFCore, but I split the Command part from Query, so that in the future we can use Dapper in case of optimizing some queries.
 
-Nel Command gestisco tutto l'accesso al repository ed il salvataggio dei dati, avrei inoltre pensato di inserire alcune logiche (ad esempio per adesso non faccio nessun controllo per verificare che gli id arrivati siano corretti, ed altre logiche più semplici che non ho inserito per dare più spazio ad altre cose).
+In the Command I manage all access to the repository and the saving of data, I would also have thought of inserting some logics (for example for now I do not do any checks to verify that the ids arrived are correct, and other simpler logics that I have not entered for give more space to other things).
 
-Il database si crea e si popola in automatico all'avvio. Ad ogni avvio se non sono presenti prodotti vengono creati 6 prodotti di default, se non ci sono ordini ne viene creato uno di default.
+The database is created and populated automatically at startup. At each start, if there are no products, 6 default products are created, if there are no orders a default is created.
 
-Il nome del database è configurabile da appSetting.json, ed anche il fatto che venga creato oppure no è un booleano in "Databae:UseMigrationScript"
+The database name is configurable from appSetting.json, and whether it is created or not is also a boolean in "Databae: UseMigrationScript"
 
-Per quanto riguarda i test ho inserito alcuni esempio che mostrano la creazione di un Entity a partire da un Dto, sia con che senza regole di validazione (qui magari possiamo approfindire a voce, perchè in effetti le regole di validazione credo che debbano stare in un Unity distinto).
-Inoltre è presente un Unit Test che mostra le differenti risposte del controller a seconda che sia trovato o meno il dato richiesto.
+As for the tests, I have included some examples that show the creation of an Entity starting from a Dto, both with and without validation rules (here maybe we can deepen orally, because in fact I believe that the validation rules must be in a Distinct Unity). There is also a Unit Test that shows the different responses of the controller depending on whether the requested data is found or not.
 
-Ho modellato l'applicazione che in modo che una volta effettuato l'ordine (quindi dopo la commit) sia generato un event intercettato da un subscriber che avrà il compito di  chiamare altri servizi (in questo caso un'interfaccia per inviare le mail che è implementata da una classe che fa finta di inviare la mail)
+I have modeled the application so that once the order is placed (therefore after the commit) an event is generated intercepted by a subscriber who will have the task of calling other services (in this case an interface to send the emails which is implemented by a class that pretends to send the mail)
 
-Un ordine ha una relazione con N prodotti, che a loro volta potranno avere N opzioni con un valore string. Se due prodotti diversi avranno la solita opzione, saranno comunque salvate due entità diverse (ognuna legata al prodotto).  Esempio:
+An order has a relationship with N products, which in turn can have N options with a string value. If two different products have the usual option, two different entities (each linked to the product) will still be saved. Example:
 
-Ho creato n Prodotti Maglia che possono avere una opzione Taglia e Colore in modo che in fase di ordine si possa dire il colore e la dimensione.
-Per altri n Prodotti Scarpe ho inserito Colore e Dimensione.
+I have created n Knitted Products that can have a Size and Color option so that when ordering you can tell the color and the size. For other Shoe Products I have entered Color and Size.
 
 
 
